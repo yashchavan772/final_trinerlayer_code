@@ -256,14 +256,14 @@ const JSAnalyzer = () => {
             </label>
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-cyan-400/60" />
                 <input
                   type="text"
                   value={domain}
                   onChange={(e) => setDomain(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="example.com or *.example.com"
-                  className="w-full pl-10 pr-4 py-3.5 bg-background/80 border border-border/40 rounded-xl text-foreground placeholder-muted-foreground/70 focus:outline-none focus:bg-surface focus:border-accent/50 focus:shadow-[0_0_12px_rgba(0,234,255,0.15)] transition-all duration-300 font-mono"
+                  className="w-full pl-10 pr-4 py-3.5 bg-[#0d1117]/90 backdrop-blur-md border border-cyan-500/20 rounded-xl text-cyan-50 placeholder-cyan-300/40 focus:outline-none focus:bg-[#0d1117] focus:border-cyan-400/50 focus:shadow-[0_0_20px_rgba(0,234,255,0.2)] hover:border-cyan-500/30 hover:shadow-[0_0_12px_rgba(0,234,255,0.1)] transition-all duration-300 font-mono"
                   disabled={isScanning}
                 />
               </div>
@@ -367,7 +367,7 @@ const JSAnalyzer = () => {
                         value={advancedSettings.scope_include}
                         onChange={(e) => setAdvancedSettings(prev => ({ ...prev, scope_include: e.target.value }))}
                         placeholder="api, app, static"
-                        className="w-full px-4 py-2.5 bg-background/80 border border-border/40 rounded-xl text-sm text-foreground placeholder-muted-foreground/70 focus:outline-none focus:bg-surface focus:border-accent/50 focus:shadow-[0_0_12px_rgba(0,234,255,0.15)] transition-all duration-300"
+                        className="w-full px-4 py-2.5 bg-[#0d1117]/90 backdrop-blur-md border border-cyan-500/20 rounded-xl text-sm text-cyan-50 placeholder-cyan-300/40 focus:outline-none focus:bg-[#0d1117] focus:border-cyan-400/50 focus:shadow-[0_0_20px_rgba(0,234,255,0.2)] hover:border-cyan-500/30 transition-all duration-300"
                       />
                     </div>
                     
@@ -378,7 +378,7 @@ const JSAnalyzer = () => {
                         value={advancedSettings.scope_exclude}
                         onChange={(e) => setAdvancedSettings(prev => ({ ...prev, scope_exclude: e.target.value }))}
                         placeholder="cdn, analytics, tracking"
-                        className="w-full px-4 py-2.5 bg-background/80 border border-border/40 rounded-xl text-sm text-foreground placeholder-muted-foreground/70 focus:outline-none focus:bg-surface focus:border-accent/50 focus:shadow-[0_0_12px_rgba(0,234,255,0.15)] transition-all duration-300"
+                        className="w-full px-4 py-2.5 bg-[#0d1117]/90 backdrop-blur-md border border-cyan-500/20 rounded-xl text-sm text-cyan-50 placeholder-cyan-300/40 focus:outline-none focus:bg-[#0d1117] focus:border-cyan-400/50 focus:shadow-[0_0_20px_rgba(0,234,255,0.2)] hover:border-cyan-500/30 transition-all duration-300"
                       />
                     </div>
                   </div>
