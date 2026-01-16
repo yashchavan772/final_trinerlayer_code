@@ -53,3 +53,8 @@ externalPort = 80
 [[ports]]
 localPort = 8000
 externalPort = 8000
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["bash", "-c", "cd 'Trinet Layer Code/Trinet/Trinet-Layer' && python -m uvicorn cve_scanner.main:app --host 0.0.0.0 --port 5000"]
+build = ["bash", "-c", "cd 'Trinet Layer Code/Trinet/Trinet-Layer/Trinet_layer' && npm run build"]
