@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import * as XLSX from 'xlsx';
 import { 
   Globe, 
   Search, 
@@ -71,10 +70,19 @@ const sanitizeValue = (value) => {
   return strValue;
 };
 
-const exportToExcel = (results, domain, scanTimestamp) => {
+const escapeCSV = (value) => {
+  if (value === null || value === undefined) return '';
+  const strValue = String(value);
+  if (strValue.includes(',') || strValue.includes('"') || strValue.includes('\n')) {
+    return `"${strValue.replace(/"/g, '""')}"`;
+  }
+  return strValue;
+};
+
+const exportToCSV = (results, domain, scanTimestamp) => {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
   const safeDomain = domain.replace(/[^a-zA-Z0-9.-]/g, '_');
-  const filename = `subdomain-enum-${safeDomain}-${timestamp}.xlsx`;
+  const filename = `subdomain-enum-${safeDomain}-${timestamp}.csv`;
   
   const headers = [
     'Subdomain',
@@ -86,42 +94,29 @@ const exportToExcel = (results, domain, scanTimestamp) => {
     'Scan Timestamp'
   ];
   
-  const data = results.map(result => {
+  const rows = results.map(result => {
     const safeSubdomain = sanitizeValue(result.subdomain);
     return [
-      safeSubdomain,
-      result.alive ? 'Responding' : 'Not Responding',
-      sanitizeValue(result.risk_level || 'N/A').toUpperCase(),
-      result.alive ? 'Yes' : 'No',
-      result.alive ? sanitizeValue(`https://${result.subdomain}`) : 'N/A',
-      result.alive ? sanitizeValue(`http://${result.subdomain}`) : 'N/A',
-      sanitizeValue(scanTimestamp || new Date().toISOString())
-    ];
+      escapeCSV(safeSubdomain),
+      escapeCSV(result.alive ? 'Responding' : 'Not Responding'),
+      escapeCSV((result.risk_level || 'N/A').toUpperCase()),
+      escapeCSV(result.alive ? 'Yes' : 'No'),
+      escapeCSV(result.alive ? `https://${result.subdomain}` : 'N/A'),
+      escapeCSV(result.alive ? `http://${result.subdomain}` : 'N/A'),
+      escapeCSV(scanTimestamp || new Date().toISOString())
+    ].join(',');
   });
   
-  const worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
-  
-  const headerStyle = { font: { bold: true } };
-  for (let i = 0; i < headers.length; i++) {
-    const cellRef = XLSX.utils.encode_cell({ r: 0, c: i });
-    if (worksheet[cellRef]) {
-      worksheet[cellRef].s = headerStyle;
-    }
-  }
-  
-  const colWidths = headers.map((header, idx) => {
-    const maxDataWidth = data.reduce((max, row) => {
-      const cellValue = row[idx] ? String(row[idx]) : '';
-      return Math.max(max, cellValue.length);
-    }, header.length);
-    return { wch: Math.min(maxDataWidth + 2, 50) };
-  });
-  worksheet['!cols'] = colWidths;
-  
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Subdomains');
-  
-  XLSX.writeFile(workbook, filename);
+  const csvContent = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
   
   return filename;
 };
@@ -552,7 +547,7 @@ const SubdomainScanner = () => {
     setTimeout(() => setToast(null), 4000);
   };
 
-  const handleExportToExcel = async () => {
+  const handleExportToCSV = async () => {
     if (!scanResult?.results?.length) {
       showToast('No data available to export', 'error');
       return;
@@ -562,16 +557,16 @@ const SubdomainScanner = () => {
     try {
       await new Promise(resolve => setTimeout(resolve, 100));
       
-      const filename = exportToExcel(
+      const filename = exportToCSV(
         scanResult.results,
         scanResult.domain,
         scanTimestamp
       );
       
-      showToast(`Excel file downloaded successfully: ${filename}`, 'success');
+      showToast(`CSV file downloaded successfully: ${filename}`, 'success');
     } catch (err) {
       console.error('Export error:', err);
-      showToast('Failed to export Excel file. Please try again.', 'error');
+      showToast('Failed to export CSV file. Please try again.', 'error');
     } finally {
       setIsExporting(false);
     }
@@ -840,7 +835,7 @@ const SubdomainScanner = () => {
                     
                     {showExportButton && (
                       <button
-                        onClick={handleExportToExcel}
+                        onClick={handleExportToCSV}
                         disabled={isExporting}
                         className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-primary font-medium rounded-lg hover:bg-accent/90 shadow-glow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm"
                       >
@@ -851,8 +846,8 @@ const SubdomainScanner = () => {
                           </>
                         ) : (
                           <>
-                            <FileSpreadsheet className="w-4 h-4" />
-                            Export to Excel
+                            <Download className="w-4 h-4" />
+                            Export CSV
                           </>
                         )}
                       </button>
