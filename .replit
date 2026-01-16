@@ -26,33 +26,29 @@ args = "Backend API"
 name = "Trinet Layer Website"
 author = "agent"
 
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd \"Trinet Layer Code/Trinet/Trinet-Layer/Trinet_layer\" && npm start"
-waitForPort = 5000
-
 [workflows.workflow.metadata]
 outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd \"TrinetLayerCode/Trinet/Trinet-Layer/Trinet_layer\" && npm start"
+waitForPort = 5000
 
 [[workflows.workflow]]
 name = "Backend API"
 author = "agent"
 
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd \"Trinet Layer Code/Trinet/Trinet-Layer\" && python -m uvicorn cve_scanner.main:app --host 0.0.0.0 --port 8000"
-waitForPort = 8000
-
 [workflows.workflow.metadata]
 outputType = "console"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd \"TrinetLayerCode/Trinet/Trinet-Layer\" && python -m uvicorn cve_scanner.main:app --host 0.0.0.0 --port 8000"
+waitForPort = 8000
 
 [[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 5001
-externalPort = 3000
 
 [[ports]]
 localPort = 5002
@@ -64,5 +60,5 @@ externalPort = 8000
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["python", "-m", "uvicorn", "cve_scanner.main:app", "--host", "0.0.0.0", "--port", "5000", "--app-dir", "Trinet Layer Code/Trinet/Trinet-Layer"]
-build = ["npm", "--prefix", "Trinet Layer Code/Trinet/Trinet-Layer/Trinet_layer", "run", "build"]
+run = ["python", "-m", "uvicorn", "cve_scanner.main:app", "--host", "0.0.0.0", "--port", "5000", "--app-dir", "TrinetLayerCode/Trinet/Trinet-Layer"]
+build = ["npm", "--prefix", "TrinetLayerCode/Trinet/Trinet-Layer/Trinet_layer", "run", "build"]
