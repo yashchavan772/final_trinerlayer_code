@@ -238,7 +238,7 @@ const GlobalSearch = () => {
     <div ref={searchRef} className="relative w-full max-w-3xl mx-auto">
       <div className="relative">
         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <Icon name="Search" size={20} className="text-muted-foreground" />
+          <Icon name="Search" size={20} className="text-cyan-400/60" />
         </div>
         <input
           ref={inputRef}
@@ -248,7 +248,7 @@ const GlobalSearch = () => {
           onChange={(e) => setQuery(e?.target?.value)}
           onKeyDown={handleKeyDown}
           onFocus={() => query?.trim()?.length > 0 && setIsOpen(true)}
-          className="w-full pl-12 pr-12 py-3.5 bg-background/80 border border-border/40 rounded-xl text-foreground placeholder-muted-foreground/70 focus:outline-none focus:bg-surface focus:border-accent/50 focus:shadow-[0_0_12px_rgba(0,234,255,0.15)] transition-all duration-300 text-sm"
+          className="w-full pl-12 pr-12 py-3.5 bg-[#0d1117]/90 backdrop-blur-md border border-cyan-500/20 rounded-xl text-cyan-50 placeholder-cyan-300/40 focus:outline-none focus:bg-[#0d1117] focus:border-cyan-400/50 focus:shadow-[0_0_20px_rgba(0,234,255,0.2)] hover:border-cyan-500/30 hover:shadow-[0_0_12px_rgba(0,234,255,0.1)] transition-all duration-300 text-sm"
         />
         {query && (
           <button
@@ -256,7 +256,7 @@ const GlobalSearch = () => {
               setQuery('');
               setIsOpen(false);
             }}
-            className="absolute inset-y-0 right-0 pr-4 flex items-center text-muted-foreground hover:text-foreground transition-colors"
+            className="absolute inset-y-0 right-0 pr-4 flex items-center text-cyan-400/50 hover:text-cyan-300 transition-colors duration-200"
           >
             <Icon name="X" size={18} />
           </button>
