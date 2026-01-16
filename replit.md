@@ -1,0 +1,87 @@
+# TrinetLayer
+
+## Overview
+
+TrinetLayer is a cybersecurity education and security scanning platform designed for vulnerability research, exploit payloads, and attack techniques. It serves as a "Bug Hunter Vault" providing educational content for security researchers and penetration testers, combining interactive learning environments with real security scanning capabilities.
+
+The platform consists of a React frontend for the educational interface and Python FastAPI backends powering three security scanning modules: CVE detection, subdomain enumeration, and JavaScript file analysis.
+
+## User Preferences
+
+Preferred communication style: Simple, everyday language.
+
+## System Architecture
+
+### Frontend Architecture
+- **Framework**: React 18 with Vite as the build tool
+- **State Management**: Redux Toolkit for centralized application state
+- **Routing**: React Router v6 for declarative navigation
+- **Styling**: TailwindCSS with CSS custom properties for theming (dark mode cybersecurity aesthetic)
+- **Animation**: Framer Motion for UI animations
+- **Form Handling**: React Hook Form for efficient form management
+- **Component Design**: Utility-first CSS with Radix UI primitives for accessible foundations; custom `cn()` utility combining clsx and tailwind-merge
+- **Module Resolution**: Path aliasing via jsconfig.json with baseUrl pointing to `./src`
+- **Data Visualization**: D3.js and Recharts for security data display
+
+### Backend Architecture
+- **Framework**: Python FastAPI for all security scanning APIs
+- **API Structure**: RESTful endpoints organized by security module under `/api/` prefix
+- **Async Processing**: Background task execution for long-running scans using FastAPI BackgroundTasks
+- **Rate Limiting**: Per-client IP rate limiting (5 requests/60 seconds) to prevent abuse
+- **Database**: SQLAlchemy ORM with PostgreSQL (via DATABASE_URL environment variable)
+- **CORS**: Permissive CORS middleware for frontend integration
+
+### Security Scanning Modules
+
+**CVE Scanner** (`cve_scanner/`)
+- Integrates ProjectDiscovery Nuclei for CVE detection
+- Year-based template organization (2025, 2026)
+- Automatic template sync from GitHub nuclei-templates repository
+- Scan lifecycle: PENDING → RUNNING → COMPLETED → FAILED
+- Detection-only scanning with no exploitation
+- URL validation blocking private IPs and localhost
+
+**Subdomain Scanner** (`subdomain_scanner/`)
+- Multi-source enumeration: Certificate Transparency (crt.sh), DNS bruteforce, Wayback Machine, Common Crawl
+- Advanced passive intelligence modules (user-enabled): wayback, commoncrawl, public_js
+- DNS validation and HTTP alive checking
+- Risk classification based on subdomain patterns (admin, dev, staging keywords)
+- Normalization and deduplication pipeline
+
+**JS Analyzer** (`js_analyzer/`)
+- JavaScript file discovery via Wayback Machine CDX API and live crawling
+- Secret detection with entropy-based validation (Shannon entropy)
+- Endpoint extraction and dangerous pattern identification
+- PRO mode with subdomain enumeration support
+- Report generation in JSON, HTML, and Markdown formats
+- Pattern-based detection with configurable security rules
+
+### AI Content Generation
+- OpenAI integration for generating vulnerability educational content
+- GPT-5 model for 40% theory / 60% practical content generation
+- Custom hooks pattern (`useVulnerabilityContentGenerator`) for AI operations
+- Dedicated service layer under `src/services/openai/` with error handling
+
+### Interactive Learning Features
+- **Live Exploit Sandbox**: Dynamic practice environments for XSS, SQL Injection, IDOR
+- **AI Security Labs**: Prompt injection, jailbreak, hallucination scenarios
+- Separate progress tracking for Beginner and Pro modes
+
+## External Dependencies
+
+### Frontend Dependencies
+- **OpenAI SDK** (`openai`): AI-powered content generation, requires `VITE_OPENAI_API_KEY`
+- **Axios**: HTTP client for API communication with backend scanners
+
+### Backend Dependencies
+- **PostgreSQL**: Primary database via `DATABASE_URL` environment variable
+- **Nuclei**: ProjectDiscovery's vulnerability scanner binary for CVE detection
+- **aiohttp**: Async HTTP client for external API queries
+- **dnspython**: DNS resolution for subdomain validation
+- **BeautifulSoup4**: HTML parsing for JS file extraction
+
+### External APIs Consumed
+- **crt.sh**: Certificate Transparency log queries for subdomain discovery
+- **Wayback Machine CDX API**: Historical URL discovery for JS files and subdomains
+- **Common Crawl Index**: Web archive data for subdomain enumeration
+- **GitHub nuclei-templates**: CVE template synchronization
