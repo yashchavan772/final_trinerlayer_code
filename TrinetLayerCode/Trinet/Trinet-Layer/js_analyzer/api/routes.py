@@ -41,7 +41,7 @@ class FindingResponse(BaseModel):
     rule_name: str
     category: str
     severity: str
-    masked_value: str
+    value: str
     line_number: int
     confidence: float
     file_url: str
@@ -174,7 +174,7 @@ async def run_js_scan(request: ScanRequest):
                     check_dangerous=True,
                     check_auth=True,
                     min_confidence=0.5,
-                    mask_secrets=True
+                    mask_secrets=False
                 )
                 
                 for processed in processed_files:
@@ -195,7 +195,7 @@ async def run_js_scan(request: ScanRequest):
                                 rule_name=finding.rule_name,
                                 category=finding.category,
                                 severity=finding.severity,
-                                masked_value=finding.masked_value,
+                                value=finding.value,
                                 line_number=finding.line_number,
                                 confidence=finding.confidence,
                                 file_url=finding.file_url,

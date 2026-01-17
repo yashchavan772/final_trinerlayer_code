@@ -123,8 +123,8 @@ const FindingCard = ({ finding, index }) => {
                 </div>
               </div>
               <div>
-                <span className="text-xs text-gray-500 uppercase block mb-1">Masked Value</span>
-                <code className="text-xs text-red-400 break-all bg-gray-900 px-2 py-1 rounded block">{finding.masked_value}</code>
+                <span className="text-xs text-gray-500 uppercase block mb-1">Value</span>
+                <code className="text-xs text-red-400 break-all bg-gray-900 px-2 py-1 rounded block">{finding.value}</code>
               </div>
             </div>
           </motion.div>
