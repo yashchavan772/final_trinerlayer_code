@@ -235,17 +235,19 @@ const ContentSection = ({ section, isActive, levelColor }) => {
                   {technique?.description}
                 </p>
 
-                <div className="mb-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Icon name="Terminal" size={16} color="var(--color-accent)" />
-                    <span className="text-sm font-semibold text-foreground">Payload</span>
+                {technique?.payload && (
+                  <div className="mb-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Icon name="Terminal" size={16} color="var(--color-accent)" />
+                      <span className="text-sm font-semibold text-foreground">Payload</span>
+                    </div>
+                    <div className="p-4 rounded-lg bg-black/40 border border-border overflow-x-auto">
+                      <pre className="text-xs md:text-sm font-medium text-green-400 leading-relaxed whitespace-pre-wrap">
+                        {technique?.payload}
+                      </pre>
+                    </div>
                   </div>
-                  <div className="p-4 rounded-lg bg-black/40 border border-border overflow-x-auto">
-                    <pre className="text-xs md:text-sm font-medium text-green-400 leading-relaxed whitespace-pre-wrap">
-                      {technique?.payload}
-                    </pre>
-                  </div>
-                </div>
+                )}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/30">
