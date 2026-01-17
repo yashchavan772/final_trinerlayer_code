@@ -57,7 +57,7 @@ class JSAnalyzerEngine:
         check_dangerous: bool = True,
         check_auth: bool = True,
         min_confidence: float = 0.5,
-        mask_secrets: bool = True
+        mask_secrets: bool = False
     ):
         self.check_secrets = check_secrets
         self.check_endpoints = check_endpoints
@@ -130,6 +130,10 @@ class JSAnalyzerEngine:
             "auth": "AUTH_RISK",
             "vcs": "SECRET_EXPOSURE",
             "crypto": "SECRET_EXPOSURE",
+            "saas": "SECRET_EXPOSURE",
+            "database": "SECRET_EXPOSURE",
+            "config": "CONFIG_EXPOSURE",
+            "pii": "PII_EXPOSURE",
             "endpoint": "POSSIBLE_IDOR",
             "dangerous": "POSSIBLE_XSS",
             "auth_issue": "AUTH_RISK",
@@ -197,7 +201,7 @@ class JSAnalyzerEngine:
                     
                     result.findings.append(finding)
                     
-                    if pattern.category in ["cloud", "payment", "auth", "vcs", "crypto"]:
+                    if pattern.category in ["cloud", "payment", "auth", "vcs", "crypto", "saas", "database", "config", "pii"]:
                         result.secrets_count += 1
                     elif pattern.category == "endpoint":
                         result.endpoints_count += 1
@@ -210,7 +214,7 @@ class JSAnalyzerEngine:
                 logger.debug(f"Pattern {pattern.id} error: {e}")
         
         result.findings.sort(key=lambda f: (
-            {"critical": 0, "high": 1, "medium": 2, "low": 3, "info": 4}.get(f.severity, 5),
+            {"critical": 0, "high": 1, "medium": 2, "low": 3}.get(f.severity, 4),
             -f.confidence
         ))
         

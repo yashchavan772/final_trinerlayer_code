@@ -1,0 +1,140 @@
+You are a senior security engineer and static JavaScript analysis expert.
+
+Task:
+Upgrade the JS Analyzer to deeply parse and analyze all .js files and detect real leaked, hardcoded, or exposed sensitive data.
+
+Core Requirements:
+1. Correctly read and analyze:
+   - Inline JS
+   - External JS
+   - Bundled JS
+   - Minified/obfuscated JS
+2. Extract and display FULL values (no masking).
+3. Remove Informative severity completely.
+4. Report findings only as:
+   Critical, High, Medium, Low
+5. Severity must be based on real-world impact.
+
+Sensitive Data Points to Detect (must include all):
+
+PII & User Data:
+- Email addresses
+- Phone numbers
+- Full names
+- Usernames
+- Passwords (plain, encoded, hashed)
+- Session IDs
+- Cookies
+- CSRF tokens
+- Reset tokens
+- OTP values
+- PINs
+- DOB patterns
+- IP addresses (IPv4 / IPv6)
+
+Authentication & Tokens:
+- JWT tokens
+- JWT secrets
+- OAuth access tokens
+- OAuth refresh tokens
+- Bearer tokens
+- Session tokens
+- API keys (generic)
+- Private keys (RSA, EC)
+- Public keys
+- Client secrets
+- Authorization headers
+- SAML assertions
+- OpenID tokens
+
+Cloud & Infrastructure:
+- AWS Access Key ID
+- AWS Secret Access Key
+- AWS Session Token
+- AWS ARNs
+- AWS S3 bucket names
+- AWS CloudFront URLs
+- Google Cloud API keys
+- Google OAuth client secrets
+- Firebase API keys
+- Firebase project IDs
+- Firebase database URLs
+- Azure storage keys
+- Azure connection strings
+- Azure tenant IDs
+- DigitalOcean tokens
+- Cloudflare API tokens
+
+Databases & Storage:
+- Database connection strings
+- MongoDB URIs
+- MySQL credentials
+- PostgreSQL credentials
+- Redis URLs
+- Elasticsearch endpoints
+- Cassandra configs
+- Supabase keys
+- Supabase URLs
+- Firebase service accounts
+
+Third-Party & SaaS Secrets:
+- Stripe secret keys
+- PayPal credentials
+- Razorpay keys
+- Twilio API keys
+- SendGrid API keys
+- Mailgun keys
+- Slack tokens
+- Discord bot tokens
+- GitHub tokens
+- GitLab tokens
+- Bitbucket tokens
+- Sentry DSNs
+- New Relic keys
+
+Application Secrets & Config:
+- Hardcoded secrets
+- Environment variables
+- .env values exposed in JS
+- Feature flags
+- Debug flags
+- Admin panel URLs
+- Internal API endpoints
+- Webhook secrets
+- Encryption keys
+- Signing keys
+
+Client-Side Security Issues:
+- postMessage without origin validation
+- eval() usage
+- new Function() usage
+- document.write usage
+- Dangerous innerHTML usage
+- Unsafe setTimeout/setInterval strings
+- Client-side auth or role checks
+- Insecure crypto usage
+- Weak random number generation
+- Exposed source maps
+- Hardcoded role flags (isAdmin, isStaff)
+
+Severity Mapping:
+- Critical:
+  credentials, private keys, cloud secrets, tokens, database access
+- High:
+  auth flaws, session exposure, JWT issues, admin endpoints
+- Medium:
+  internal APIs, debug flags, feature toggles
+- Low:
+  weak patterns with limited impact
+
+Constraints:
+- Do NOT add new UI components.
+- Do NOT change existing scan flow unless required.
+- Do NOT add Informative findings.
+- Keep performance optimized for large JS files.
+
+Output:
+Return ONLY the required code changes.
+No explanations.
+No comments.
+No placeholders.
