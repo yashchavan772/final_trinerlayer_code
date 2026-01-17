@@ -1,15 +1,17 @@
 import React from 'react';
 import Icon from '../../../components/AppIcon';
 
-const FilterControls = ({ filters, onFilterChange, isProMode, onModeToggle }) => {
+const FilterControls = ({ filters, onFilterChange, isProMode, onModeToggle, sqlType }) => {
   const databaseOptions = ['All', 'MySQL', 'PostgreSQL', 'MSSQL', 'Oracle'];
   const complexityOptions = ['All', 'Beginner', 'Intermediate', 'Advanced'];
   const techniqueOptions = {
     'union-based': ['All', 'Data Extraction', 'Reconnaissance', 'Schema Discovery', 'Fingerprinting', 'File Access', 'Privilege Escalation', 'Evasion', 'Blind Testing'],
     'boolean-based': ['All', 'Verification', 'Fingerprinting', 'Reconnaissance', 'Data Extraction', 'Schema Discovery', 'Blind Testing', 'Evasion'],
     'time-based': ['All', 'Verification', 'Fingerprinting', 'Reconnaissance', 'Data Extraction', 'Blind Testing', 'Evasion'],
-    'error-based': ['All', 'Fingerprinting', 'Data Extraction', 'Schema Discovery', 'Verification', 'Evasion']
+    'error-based': ['All', 'Fingerprinting', 'Data Extraction', 'Schema Discovery', 'Verification', 'Evasion'],
+    'stacked-queries': ['All', 'Data Manipulation', 'Command Execution', 'Privilege Escalation', 'Persistence', 'Data Extraction', 'Evasion']
   };
+  const currentTechniques = techniqueOptions[sqlType] || techniqueOptions['union-based'];
 
   return (
     <div className="mb-8 bg-surface border border-border rounded-xl p-6">
@@ -92,7 +94,7 @@ const FilterControls = ({ filters, onFilterChange, isProMode, onModeToggle }) =>
             onChange={(e) => onFilterChange('technique', e?.target?.value)}
             className="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
           >
-            {techniqueOptions?.['union-based']?.map(option => (
+            {currentTechniques?.map(option => (
               <option key={option} value={option}>{option}</option>
             ))}
           </select>

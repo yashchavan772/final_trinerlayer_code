@@ -6,7 +6,7 @@ const StatsSection = () => {
     {
       id: 1,
       icon: "Database",
-      value: "243",
+      value: "224",
       label: "Exploit Payloads",
       description: "Tested and documented",
       color: "var(--color-accent)"
@@ -22,7 +22,7 @@ const StatsSection = () => {
     {
       id: 3,
       icon: "Code",
-      value: "112",
+      value: "124",
       label: "Payload Vault",
       description: "Curated collection",
       color: "var(--color-accent)"

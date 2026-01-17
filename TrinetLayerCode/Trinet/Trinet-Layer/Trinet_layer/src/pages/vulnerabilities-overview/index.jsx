@@ -25,7 +25,7 @@ const VulnerabilitiesOverview = () => {
       complexity: "Medium",
       descriptionSimple: "XSS allows attackers to inject malicious scripts into web pages viewed by other users, potentially stealing sensitive information or performing actions on their behalf.",
       descriptionAdvanced: "Cross-Site Scripting vulnerabilities enable injection of client-side scripts into web applications, bypassing same-origin policy and executing arbitrary JavaScript in victim browsers.",
-      payloadCount: 75,
+      payloadCount: 60,
       targetCount: 3,
       trend: "Reflected, Stored, DOM",
       detailPath: "/xss",
@@ -67,7 +67,7 @@ const VulnerabilitiesOverview = () => {
       complexity: "Medium",
       descriptionSimple: "SQL injection allows attackers to interfere with database queries, potentially accessing, modifying, or deleting sensitive data stored in the application's database.",
       descriptionAdvanced: "SQL injection exploits inadequate input validation to inject malicious SQL statements, enabling database enumeration, data exfiltration, and authentication bypass.",
-      payloadCount: 104,
+      payloadCount: 100,
       targetCount: 5,
       trend: "Union, Boolean, Time, Error, Stack",
       detailPath: "/sql-injection",
@@ -157,7 +157,7 @@ const VulnerabilitiesOverview = () => {
     {
       icon: "Code",
       label: "Total Payloads",
-      value: "243",
+      value: "224",
       trend: "up",
       trendValue: "verified",
       color: "var(--color-accent-green)"
@@ -165,7 +165,7 @@ const VulnerabilitiesOverview = () => {
     {
       icon: "Database",
       label: "Payload Vault",
-      value: "112",
+      value: "124",
       trend: "up",
       trendValue: "curated",
       color: "var(--color-warning)"

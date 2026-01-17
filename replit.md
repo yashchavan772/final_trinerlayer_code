@@ -68,14 +68,14 @@ Preferred communication style: Simple, everyday language.
 - Separate progress tracking for Beginner and Pro modes
 
 ### Verified Payload Counts (as of Jan 2026)
-- **XSS**: 75 payloads (Reflected, Stored, DOM)
-- **SQL Injection**: 104 payloads (Union, Boolean, Time, Error, Stack)
+- **XSS**: 60 payloads (Reflected, Stored, DOM)
+- **SQL Injection**: 100 payloads (Union, Boolean, Time, Error, Stacked)
 - **IDOR**: 27 payloads (Parameter, Enumeration, Privilege, API)
 - **OTP Bypass**: 22 payloads (Reuse, Skip, Rate, Response)
 - **CRLF Injection**: 12 payloads (Header, Response, Cache)
 - **Dependency Confusion**: 3 PoC examples
-- **Total**: 243 payloads across 6 vulnerability types
-- **Payload Vault**: 112 curated payloads (subset of total)
+- **Total**: 224 payloads across 6 vulnerability types
+- **Payload Vault**: 124 curated payloads (subset of total)
 
 ## External Dependencies
 
