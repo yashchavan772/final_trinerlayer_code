@@ -24,6 +24,7 @@ import AISecurityOWASPTop10 from './pages/ai-security-owasp-top10';
 import AISecurityPrompts from './pages/ai-security-prompts';
 import AISecurityLabs from './pages/ai-security-labs';
 import { Lab1PromptInjection, Lab2Jailbreak, Lab3Hallucination, Lab4ExcessiveAgency, Lab5RAGPoisoning } from './pages/ai-security-labs/labs';
+import Contribute from './pages/contribute';
 
 const Routes = () => {
   return (
@@ -57,6 +58,7 @@ const Routes = () => {
         <Route path="/ai-security-labs/lab-3-hallucination" element={<Lab3Hallucination />} />
         <Route path="/ai-security-labs/lab-4-excessive-agency" element={<Lab4ExcessiveAgency />} />
         <Route path="/ai-security-labs/lab-5-rag-poisoning" element={<Lab5RAGPoisoning />} />
+        <Route path="/contribute" element={<Contribute />} />
         <Route path="*" element={<NotFound />} />
       </RouterRoutes>
       </ErrorBoundary>

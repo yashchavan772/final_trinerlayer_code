@@ -170,7 +170,7 @@ const Footer = () => {
       title: 'Community',
       links: [
         { id: 1, label: 'Discord Server', url: '#' },
-        { id: 2, label: 'Contributors', url: '#' }
+        { id: 2, label: 'Contribute', url: '/contribute' }
       ]
     },
     {
