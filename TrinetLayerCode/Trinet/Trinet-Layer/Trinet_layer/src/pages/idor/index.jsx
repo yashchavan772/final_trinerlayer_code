@@ -61,11 +61,11 @@ const IDORVulnerabilityDetails = () => {
   ];
 
   const filters = [
-    { id: 'all', label: 'All Payloads', icon: 'Grid', count: 24 },
-    { id: 'parameter', label: 'Parameter Manipulation', icon: 'Settings', count: 8 },
+    { id: 'all', label: 'All Payloads', icon: 'Grid', count: 27 },
+    { id: 'parameter', label: 'Parameter Manipulation', icon: 'Settings', count: 9 },
     { id: 'enumeration', label: 'ID Enumeration', icon: 'Hash', count: 6 },
-    { id: 'privilege', label: 'Privilege Escalation', icon: 'TrendingUp', count: 5 },
-    { id: 'api', label: 'API Exploitation', icon: 'Code', count: 5 }
+    { id: 'privilege', label: 'Privilege Escalation', icon: 'TrendingUp', count: 6 },
+    { id: 'api', label: 'API Exploitation', icon: 'Code', count: 6 }
   ];
 
   const payloads = [

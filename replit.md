@@ -67,6 +67,16 @@ Preferred communication style: Simple, everyday language.
 - **AI Security Labs**: Prompt injection, jailbreak, hallucination scenarios
 - Separate progress tracking for Beginner and Pro modes
 
+### Verified Payload Counts (as of Jan 2026)
+- **XSS**: 75 payloads (Reflected, Stored, DOM)
+- **SQL Injection**: 104 payloads (Union, Boolean, Time, Error, Stack)
+- **IDOR**: 27 payloads (Parameter, Enumeration, Privilege, API)
+- **OTP Bypass**: 22 payloads (Reuse, Skip, Rate, Response)
+- **CRLF Injection**: 12 payloads (Header, Response, Cache)
+- **Dependency Confusion**: 3 PoC examples
+- **Total**: 243 payloads across 6 vulnerability types
+- **Payload Vault**: 112 curated payloads (subset of total)
+
 ## External Dependencies
 
 ### Frontend Dependencies

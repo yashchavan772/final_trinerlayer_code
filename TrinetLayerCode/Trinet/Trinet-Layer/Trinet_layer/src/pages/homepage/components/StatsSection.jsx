@@ -6,7 +6,7 @@ const StatsSection = () => {
     {
       id: 1,
       icon: "Database",
-      value: "2,500+",
+      value: "243",
       label: "Exploit Payloads",
       description: "Tested and documented",
       color: "var(--color-accent)"
@@ -14,24 +14,24 @@ const StatsSection = () => {
     {
       id: 2,
       icon: "Shield",
-      value: "50+",
-      label: "Vulnerabilities",
-      description: "Comprehensive guides",
+      value: "6",
+      label: "Vulnerability Types",
+      description: "XSS, SQLi, IDOR & more",
       color: "var(--color-accent-green)"
     },
     {
       id: 3,
-      icon: "Users",
-      value: "10K+",
-      label: "Security Researchers",
-      description: "Active community",
+      icon: "Code",
+      value: "112",
+      label: "Payload Vault",
+      description: "Curated collection",
       color: "var(--color-accent)"
     },
     {
       id: 4,
       icon: "TrendingUp",
-      value: "99.9%",
-      label: "Success Rate",
+      value: "100%",
+      label: "Real Payloads",
       description: "Verified exploits",
       color: "var(--color-accent-green)"
     }
