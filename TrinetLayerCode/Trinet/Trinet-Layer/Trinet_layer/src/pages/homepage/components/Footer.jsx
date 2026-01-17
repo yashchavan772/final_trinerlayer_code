@@ -153,7 +153,7 @@ const Footer = () => {
     { id: 1, name: 'X', Icon: XIcon, url: 'https://x.com/Trinetlayer', ariaLabel: 'Follow us on X' },
     { id: 2, name: 'Instagram', Icon: InstagramIcon, url: 'https://www.instagram.com/trinet_layer', ariaLabel: 'Follow us on Instagram' },
     { id: 3, name: 'Discord', Icon: DiscordIcon, url: 'https://discord.com/invite/GwKjSYEu', ariaLabel: 'Join our Discord community' },
-    { id: 4, name: 'LinkedIn', Icon: LinkedInIcon, url: '#', ariaLabel: 'Connect on LinkedIn' }
+    { id: 4, name: 'LinkedIn', Icon: LinkedInIcon, url: 'https://www.linkedin.com/company/trinet-layer/', ariaLabel: 'Connect on LinkedIn' }
   ];
 
   const footerLinks = [
