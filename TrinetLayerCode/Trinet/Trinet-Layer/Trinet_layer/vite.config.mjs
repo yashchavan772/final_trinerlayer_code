@@ -3,16 +3,31 @@ import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import tagger from "@dhiwise/component-tagger";
 
-const blockJsonPlugin = () => ({
-  name: 'block-json-access',
+const securityPlugin = () => ({
+  name: 'security-headers-plugin',
   configureServer(server) {
     server.middlewares.use((req, res, next) => {
-      if (req.url && req.url.endsWith('.json') && !req.url.includes('/api/')) {
+      const url = req.url || '';
+      const blockedPatterns = [
+        /^\/\.env/i,
+        /^\/\.git/i,
+        /^\/\.npmrc/i,
+        /^\/\.yarnrc/i,
+      ];
+      
+      const isBlocked = blockedPatterns.some(pattern => pattern.test(url));
+      
+      if (isBlocked) {
         res.statusCode = 403;
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ error: 'Forbidden', message: 'Access to JSON files is not allowed' }));
+        res.end(JSON.stringify({ error: 'Forbidden', message: 'Access denied' }));
         return;
       }
+      
+      res.setHeader('X-Content-Type-Options', 'nosniff');
+      res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+      res.setHeader('X-XSS-Protection', '1; mode=block');
+      
       next();
     });
   }
@@ -23,8 +38,14 @@ export default defineConfig({
   build: {
     outDir: "build",
     chunkSizeWarningLimit: 2000,
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      }
+    }
   },
-  plugins: [blockJsonPlugin(), tsconfigPaths(), react(), tagger()],
+  plugins: [securityPlugin(), tsconfigPaths(), react(), tagger()],
   server: {
     port: 5000,
     host: "0.0.0.0",
