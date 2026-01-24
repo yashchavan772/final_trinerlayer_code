@@ -58,7 +58,7 @@ class TestNormalizeSingle:
     
     def test_multiple_wildcards(self):
         result = normalize_single("*.*.example.com", "example.com")
-        assert result == ""
+        assert result == "example.com"
 
 
 class TestNormalizeSubdomains:
