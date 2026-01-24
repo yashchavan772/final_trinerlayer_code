@@ -5,12 +5,13 @@ from typing import Callable, Dict, Optional, List, Any, Awaitable
 from collections import OrderedDict
 
 from .models import Job, JobStatus, JobType
+from config import config
 
 logger = logging.getLogger(__name__)
 
-MAX_JOBS_IN_MEMORY = 1000
-JOB_TTL_HOURS = 24
-MAX_CONCURRENT_WORKERS = 3
+MAX_JOBS_IN_MEMORY = config.MAX_JOBS_IN_MEMORY
+JOB_TTL_HOURS = config.JOB_TTL_HOURS
+MAX_CONCURRENT_WORKERS = config.JOB_QUEUE_WORKERS
 
 
 class JobQueue:

@@ -17,6 +17,7 @@ from js_analyzer.api.routes import router as js_analyzer_router
 from job_queue.api import router as job_router
 from job_queue.manager import job_manager
 from job_queue.handlers import register_all_handlers
+from config import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 BUILD_DIR = BASE_DIR / "Trinet_layer" / "build"
@@ -24,7 +25,7 @@ BUILD_DIR = BASE_DIR / "Trinet_layer" / "build"
 START_TIME = None
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=getattr(logging, config.LOG_LEVEL),
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
@@ -68,7 +69,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=config.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -174,7 +175,7 @@ async def health_check():
     return {
         "status": overall_status,
         "timestamp": datetime.utcnow().isoformat() + "Z",
-        "version": "1.0.0",
+        "version": config.APP_VERSION,
         "uptime": uptime,
         "components": components,
         "job_queue": {

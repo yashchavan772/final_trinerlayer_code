@@ -55,29 +55,32 @@ async def create_scan(
     db: Session = Depends(get_db)
 ):
     """Create and queue a new CVE scan for the specified target URL."""
-    client_ip = http_request.client.host if http_request.client else None
+    client_ip: str = http_request.client.host if http_request.client else "unknown"
     
     scan, message = orchestrator.create_scan(db, request.target_url, client_ip)
     
     if not scan:
         raise HTTPException(status_code=400, detail=message)
     
+    scan_id: str = str(scan.scan_id)
+    years: List[str] = request.years if request.years else ["2025"]
+    
     async def run_scan_task():
         from cve_scanner.models.database import SessionLocal
         db_session = SessionLocal()
         try:
-            await orchestrator.execute_scan(db_session, scan.scan_id, request.years)
+            await orchestrator.execute_scan(db_session, scan_id, years)
         finally:
             db_session.close()
-            if scan.scan_id in orchestrator.active_scans:
-                del orchestrator.active_scans[scan.scan_id]
+            if scan_id in orchestrator.active_scans:
+                del orchestrator.active_scans[scan_id]
     
     task = asyncio.create_task(run_scan_task())
-    orchestrator.active_scans[scan.scan_id] = task
+    orchestrator.active_scans[scan_id] = task
     background_tasks.add_task(lambda: None)
     
     return ScanResponse(
-        scan_id=scan.scan_id,
+        scan_id=scan_id,
         status=scan.status.value,
         message="Scan queued successfully"
     )
