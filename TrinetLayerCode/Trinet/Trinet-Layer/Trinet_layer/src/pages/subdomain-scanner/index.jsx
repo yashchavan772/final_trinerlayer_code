@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Globe, 
@@ -164,6 +164,59 @@ const ScanInProgressPopup = ({ isOpen, onClose }) => (
             className="w-full py-3 bg-accent text-primary font-medium rounded-lg hover:bg-accent/90 transition-all shadow-glow-sm"
           >
             Got it
+          </button>
+        </motion.div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+);
+
+const LargeScopePopup = ({ isOpen, onClose }) => (
+  <AnimatePresence>
+    {isOpen && (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          className="bg-gray-900 border border-cyan-700/50 rounded-2xl p-6 max-w-md w-full shadow-xl shadow-cyan-900/20"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-cyan-500/20 rounded-lg">
+                <Loader2 className="w-6 h-6 text-cyan-400 animate-spin" />
+              </div>
+              <h3 className="text-xl font-semibold text-white">Large Scope Detected</h3>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-1 text-gray-400 hover:text-white transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          
+          <p className="text-gray-300 mb-6 leading-relaxed">
+            The scope is very large. Our system is actively working on it. Results will be shown once the scan is complete.
+          </p>
+          
+          <div className="flex items-center gap-2 text-cyan-400 text-sm mb-6">
+            <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+            <span>Scan running in background...</span>
+          </div>
+          
+          <button
+            onClick={onClose}
+            className="w-full py-3 bg-cyan-600 text-white font-medium rounded-lg hover:bg-cyan-500 transition-all"
+          >
+            Continue Waiting
           </button>
         </motion.div>
       </motion.div>
@@ -533,6 +586,8 @@ const SubdomainScanner = () => {
   const [showScanPopup, setShowScanPopup] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [toast, setToast] = useState(null);
+  const [showLargeScopePopup, setShowLargeScopePopup] = useState(false);
+  const largeScopeTimerRef = useRef(null);
   
   const [advancedSettings, setAdvancedSettings] = useState({
     wayback: false,
@@ -541,6 +596,27 @@ const SubdomainScanner = () => {
   });
 
   const showExportButton = scanCompleted && scanResult?.results?.length > 0;
+
+  useEffect(() => {
+    if (isScanning) {
+      largeScopeTimerRef.current = setTimeout(() => {
+        setShowLargeScopePopup(true);
+      }, 120000);
+    } else {
+      if (largeScopeTimerRef.current) {
+        clearTimeout(largeScopeTimerRef.current);
+        largeScopeTimerRef.current = null;
+      }
+      setShowLargeScopePopup(false);
+    }
+
+    return () => {
+      if (largeScopeTimerRef.current) {
+        clearTimeout(largeScopeTimerRef.current);
+        largeScopeTimerRef.current = null;
+      }
+    };
+  }, [isScanning]);
 
   const showToast = (message, type = 'info') => {
     setToast({ message, type });
@@ -633,6 +709,10 @@ const SubdomainScanner = () => {
       <ScanInProgressPopup 
         isOpen={showScanPopup} 
         onClose={() => setShowScanPopup(false)} 
+      />
+      <LargeScopePopup 
+        isOpen={showLargeScopePopup} 
+        onClose={() => setShowLargeScopePopup(false)} 
       />
       <AnimatePresence>
         {toast && (
