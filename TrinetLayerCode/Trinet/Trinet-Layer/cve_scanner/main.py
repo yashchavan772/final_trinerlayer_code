@@ -12,6 +12,9 @@ from cve_scanner.models.database import init_db
 from cve_scanner.services.template_sync import templates_exist, sync_cve_templates
 from subdomain_scanner.api.routes import router as subdomain_router
 from js_analyzer.api.routes import router as js_analyzer_router
+from job_queue.api import router as job_router
+from job_queue.manager import job_manager
+from job_queue.handlers import register_all_handlers
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 BUILD_DIR = BASE_DIR / "Trinet_layer" / "build"
@@ -38,8 +41,15 @@ async def lifespan(app: FastAPI):
     else:
         logger.info("CVE templates already available")
     
+    logger.info("Initializing job queue...")
+    register_all_handlers(job_manager)
+    await job_manager.initialize()
+    logger.info("Job queue initialized with 3 workers")
+    
     yield
     
+    logger.info("Shutting down job queue...")
+    await job_manager.shutdown()
     logger.info("CVE Scanner shutting down...")
 
 app = FastAPI(
@@ -60,19 +70,30 @@ app.add_middleware(
 app.include_router(cve_router, prefix="/api")
 app.include_router(subdomain_router, prefix="/api/recon")
 app.include_router(js_analyzer_router, prefix="/api")
+app.include_router(job_router, prefix="/api")
 
 if BUILD_DIR.exists():
     app.mount("/assets", StaticFiles(directory=str(BUILD_DIR / "assets")), name="assets")
 
 @app.get("/api/health")
 async def health_check():
+    queue_stats = job_manager.get_queue_stats()
     return {
+        "status": "healthy",
+        "templates_available": templates_exist(),
         "name": "TrinetLayer Security API",
         "version": "1.0.0",
         "services": {
             "cve_scanner": "/api/scan",
             "subdomain_enum": "/api/recon/subdomains",
-            "js_analyzer": "/api/js-analyzer/scan"
+            "js_analyzer": "/api/js-analyzer/scan",
+            "job_queue": "/api/jobs"
+        },
+        "job_queue": {
+            "running": queue_stats["running"],
+            "workers": queue_stats["workers"],
+            "pending_jobs": queue_stats["status_counts"]["pending"],
+            "running_jobs": queue_stats["status_counts"]["running"]
         },
         "documentation": "/docs"
     }
