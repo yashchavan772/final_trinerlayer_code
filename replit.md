@@ -26,10 +26,18 @@ Preferred communication style: Simple, everyday language.
 ### Backend Architecture
 - **Framework**: Python FastAPI for all security scanning APIs
 - **API Structure**: RESTful endpoints organized by security module under `/api/` prefix
-- **Async Processing**: Background task execution for long-running scans using FastAPI BackgroundTasks
+- **Async Processing**: Background job queue with 3 async workers for long-running scans
 - **Rate Limiting**: Per-client IP rate limiting (5 requests/60 seconds) to prevent abuse
 - **Database**: SQLAlchemy ORM with PostgreSQL (via DATABASE_URL environment variable)
 - **CORS**: Permissive CORS middleware for frontend integration
+
+### Background Job Queue (`job_queue/`)
+- In-memory async job queue with configurable workers (default: 3)
+- Supports subdomain scans, CVE scans, and JS analysis
+- Job lifecycle: PENDING → RUNNING → COMPLETED/FAILED/CANCELLED
+- Automatic cleanup of completed jobs after 24 hours
+- Max 1000 jobs in memory with LRU eviction
+- API endpoints: `/api/jobs/` for submission, status, results, cancellation
 
 ### Security Scanning Modules
 
