@@ -16,9 +16,9 @@ from ..utils.risk import classify_risk
 
 logger = logging.getLogger(__name__)
 
-BASIC_SCAN_TIMEOUT = 120
-ADVANCED_SCAN_TIMEOUT = 180
-ADVANCED_MODULE_TIMEOUT = 20
+BASIC_SCAN_TIMEOUT = 180
+ADVANCED_SCAN_TIMEOUT = 300
+ADVANCED_MODULE_TIMEOUT = 30
 
 
 @dataclass

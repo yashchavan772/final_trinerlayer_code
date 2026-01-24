@@ -5,9 +5,9 @@ from typing import Dict, Any, Optional
 
 logger = logging.getLogger(__name__)
 
-HTTP_TIMEOUT = 5
+HTTP_TIMEOUT = 3
 MAX_REDIRECTS = 3
-MAX_CONCURRENT_HTTP = 15
+MAX_CONCURRENT_HTTP = 30
 VALID_STATUS_CODES = {200, 301, 302, 401, 403, 404, 500, 502, 503}
 
 

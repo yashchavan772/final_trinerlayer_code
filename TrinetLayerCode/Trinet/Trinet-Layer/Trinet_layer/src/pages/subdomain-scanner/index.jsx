@@ -611,7 +611,11 @@ const SubdomainScanner = () => {
       setScanCompleted(true);
       setScanTimestamp(new Date().toISOString());
     } catch (err) {
-      setError('An error occurred during the scan. Please try again.');
+      if (err.name === 'TypeError' && err.message.includes('Failed to fetch')) {
+        setError('Scan timed out. Large domains like yandex.com may take longer. Try disabling some advanced options.');
+      } else {
+        setError(err.message || 'An error occurred during the scan. Please try again.');
+      }
       setScanCompleted(false);
     } finally {
       setIsScanning(false);
