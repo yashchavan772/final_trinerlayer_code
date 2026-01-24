@@ -25,7 +25,12 @@ async def test_health_endpoint():
         response = await client.get("/api/health")
         assert response.status_code == 200
         data = response.json()
-        assert data["status"] == "healthy"
+        assert data["status"] in ["healthy", "degraded", "unhealthy"]
+        assert "timestamp" in data
+        assert "version" in data
+        assert "components" in data
+        assert "job_queue" in data
+        assert "endpoints" in data
 
 
 @pytest.mark.asyncio

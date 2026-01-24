@@ -105,13 +105,6 @@ async def get_templates_stats():
     """Get template statistics including counts by year."""
     return get_template_stats()
 
-@router.get("/health")
-async def health_check():
-    """Basic health check endpoint."""
-    return {
-        "status": "healthy",
-        "templates_available": templates_exist()
-    }
 
 @router.get("/test/vulnerable-endpoint")
 async def test_vulnerable_endpoint():
