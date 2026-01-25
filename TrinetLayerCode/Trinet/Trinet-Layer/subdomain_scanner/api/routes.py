@@ -232,6 +232,7 @@ class SafeSubdomainResult(BaseModel):
 
 class ScanSummary(BaseModel):
     total_discovered: int
+    total_found: Optional[int] = None
     alive: int
     execution_time_seconds: float
 
@@ -240,6 +241,7 @@ class ScanResponse(BaseModel):
     domain: str
     summary: ScanSummary
     results: List[SafeSubdomainResult]
+    all_subdomains_for_export: Optional[List[str]] = None
     disclaimer: str
     warning: Optional[str] = None
 
@@ -299,6 +301,7 @@ async def full_scan(request: ScanRequest, http_request: Request):
     summary_data = scan_result.get("summary", {})
     summary = ScanSummary(
         total_discovered=summary_data.get("total_discovered", 0),
+        total_found=summary_data.get("total_found"),
         alive=summary_data.get("alive", 0),
         execution_time_seconds=summary_data.get("execution_time_seconds", 0)
     )
@@ -307,6 +310,7 @@ async def full_scan(request: ScanRequest, http_request: Request):
         domain=normalized_domain,
         summary=summary,
         results=safe_results,
+        all_subdomains_for_export=scan_result.get("all_subdomains_for_export"),
         disclaimer=scan_result.get("disclaimer", "Scan only domains you own or have permission to test."),
         warning=scan_result.get("warning")
     )

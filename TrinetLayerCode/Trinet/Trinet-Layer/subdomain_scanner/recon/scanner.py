@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 BASIC_SCAN_TIMEOUT = 180
 ADVANCED_SCAN_TIMEOUT = 300
 ADVANCED_MODULE_TIMEOUT = 30
-MAX_SUBDOMAINS_TO_PROCESS = 500
+MAX_SUBDOMAINS_TO_DISPLAY = 1000
 DNS_VALIDATION_BATCH_SIZE = 100
 ALIVE_CHECK_BATCH_SIZE = 100
 
@@ -125,20 +125,25 @@ class SubdomainScanner:
                     return result
                 
                 total_found = len(all_subdomains)
-                if total_found > MAX_SUBDOMAINS_TO_PROCESS:
+                all_subdomain_names = list(all_subdomains.keys())
+                
+                if total_found > MAX_SUBDOMAINS_TO_DISPLAY:
                     self.logger.info(
-                        f"Limiting results from {total_found} to {MAX_SUBDOMAINS_TO_PROCESS}"
+                        f"Limiting display from {total_found} to {MAX_SUBDOMAINS_TO_DISPLAY}"
                     )
                     sorted_subs = sorted(
                         all_subdomains.items(),
                         key=lambda x: len(x[1].get("sources", [])),
                         reverse=True
                     )
-                    all_subdomains = dict(sorted_subs[:MAX_SUBDOMAINS_TO_PROCESS])
+                    all_subdomains = dict(sorted_subs[:MAX_SUBDOMAINS_TO_DISPLAY])
                     result["warning"] = (
-                        f"Found {total_found} subdomains. Showing top {MAX_SUBDOMAINS_TO_PROCESS} "
-                        "most referenced results."
+                        f"Found {total_found} subdomains. Showing top {MAX_SUBDOMAINS_TO_DISPLAY} "
+                        "in results. All subdomains available in CSV export."
                     )
+                
+                result["all_subdomains_for_export"] = all_subdomain_names
+                result["summary"]["total_found"] = total_found
                 
                 dns_results = await validate_dns(set(all_subdomains.keys()))
                 
