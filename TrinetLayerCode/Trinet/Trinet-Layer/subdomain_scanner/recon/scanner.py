@@ -19,6 +19,9 @@ logger = logging.getLogger(__name__)
 BASIC_SCAN_TIMEOUT = 180
 ADVANCED_SCAN_TIMEOUT = 300
 ADVANCED_MODULE_TIMEOUT = 30
+MAX_SUBDOMAINS_TO_PROCESS = 500
+DNS_VALIDATION_BATCH_SIZE = 100
+ALIVE_CHECK_BATCH_SIZE = 100
 
 
 @dataclass
@@ -121,6 +124,22 @@ class SubdomainScanner:
                     )
                     return result
                 
+                total_found = len(all_subdomains)
+                if total_found > MAX_SUBDOMAINS_TO_PROCESS:
+                    self.logger.info(
+                        f"Limiting results from {total_found} to {MAX_SUBDOMAINS_TO_PROCESS}"
+                    )
+                    sorted_subs = sorted(
+                        all_subdomains.items(),
+                        key=lambda x: len(x[1].get("sources", [])),
+                        reverse=True
+                    )
+                    all_subdomains = dict(sorted_subs[:MAX_SUBDOMAINS_TO_PROCESS])
+                    result["warning"] = (
+                        f"Found {total_found} subdomains. Showing top {MAX_SUBDOMAINS_TO_PROCESS} "
+                        "most referenced results."
+                    )
+                
                 dns_results = await validate_dns(set(all_subdomains.keys()))
                 
                 valid_subdomains = [
@@ -160,13 +179,13 @@ class SubdomainScanner:
         
         except asyncio.TimeoutError:
             result["success"] = False
-            result["warning"] = "Scan timed out. Partial results may be returned."
+            result["warning"] = "Scan timed out. This domain has many subdomains. Try without Advanced Mode for faster results."
             self.logger.warning(f"Scan timeout for {domain}")
         
         except Exception as e:
             result["success"] = False
-            result["warning"] = "An error occurred during scanning."
-            self.logger.error(f"Scan error for {domain}: {e}")
+            result["warning"] = f"Scan error: {type(e).__name__}. Please try again or use basic mode."
+            self.logger.error(f"Scan error for {domain}: {e}", exc_info=True)
         
         result["summary"]["execution_time_seconds"] = round(
             time.time() - start_time, 2

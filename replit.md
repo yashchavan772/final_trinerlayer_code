@@ -55,6 +55,8 @@ Preferred communication style: Simple, everyday language.
 - DNS validation and HTTP alive checking
 - Risk classification based on subdomain patterns (admin, dev, staging keywords)
 - Normalization and deduplication pipeline
+- Result limiting: Maximum 500 subdomains returned (top results by source count) for large domains
+- Timeout handling: 180s basic / 300s advanced mode with graceful degradation
 
 **JS Analyzer** (`js_analyzer/`)
 - JavaScript file discovery via Wayback Machine CDX API and live crawling

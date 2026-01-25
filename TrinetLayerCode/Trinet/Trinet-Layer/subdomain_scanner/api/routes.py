@@ -113,11 +113,13 @@ async def enumerate_subdomains(request: SubdomainRequest, http_request: Request)
                 passive_subdomains = passive_results.get("subdomains", {})
                 passive_metadata = passive_results.get("metadata", {"crt_sh_success": True})
             
+            active_subdomains: Dict[str, Any] = {}
             if isinstance(active_results, Exception):
                 logger.error(f"Active enumeration failed: {active_results}")
-                active_results = {}
+            elif isinstance(active_results, dict):
+                active_subdomains = active_results
             
-            all_subdomains = {}
+            all_subdomains: Dict[str, Any] = {}
             
             for subdomain, data in passive_subdomains.items():
                 all_subdomains[subdomain] = {
@@ -127,7 +129,7 @@ async def enumerate_subdomains(request: SubdomainRequest, http_request: Request)
                     "http_status": None
                 }
             
-            for subdomain, data in active_results.items():
+            for subdomain, data in active_subdomains.items():
                 if subdomain in all_subdomains:
                     all_subdomains[subdomain]["sources"].extend(data.get("sources", []))
                     all_subdomains[subdomain]["dns_valid"] = True
@@ -139,7 +141,7 @@ async def enumerate_subdomains(request: SubdomainRequest, http_request: Request)
                         "http_status": None
                     }
             
-            passive_only = set(passive_subdomains.keys()) - set(active_results.keys())
+            passive_only = set(passive_subdomains.keys()) - set(active_subdomains.keys())
             if passive_only:
                 dns_validation = await validate_dns(passive_only)
                 for subdomain, is_valid in dns_validation.items():
@@ -273,9 +275,18 @@ async def full_scan(request: ScanRequest, http_request: Request):
     
     try:
         scan_result = await scanner.scan(normalized_domain, advanced_config)
+    except asyncio.TimeoutError:
+        logger.error(f"Scan timeout for {normalized_domain}")
+        raise HTTPException(
+            status_code=504,
+            detail="Scan timed out. This domain has many subdomains. Try without Advanced Mode for faster results."
+        )
     except Exception as e:
-        logger.error(f"Scan error for {normalized_domain}: {e}")
-        raise HTTPException(status_code=500, detail="Internal server error during scan")
+        logger.error(f"Scan error for {normalized_domain}: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Scan failed: {type(e).__name__}. Please try again."
+        )
     
     safe_results = []
     for item in scan_result.get("results", []):

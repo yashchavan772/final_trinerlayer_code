@@ -274,4 +274,4 @@ async def test_scan_internal_error_handling():
             )
             
             assert response.status_code == 500
-            assert "internal server error" in response.json()["detail"].lower()
+            assert "scan failed" in response.json()["detail"].lower()
