@@ -186,11 +186,11 @@ const Contribute = () => {
                   We review all contributions and will get back to you as soon as possible.
                 </p>
                 <a
-                  href="mailto:trinetlayer@gmail.com"
+                  href="mailto:team@trinetlayer.com"
                   className="inline-flex items-center gap-3 px-6 py-3 bg-accent/10 hover:bg-accent/20 border border-accent/30 hover:border-accent/50 rounded-xl text-accent font-medium transition-all group"
                 >
                   <Icon name="Mail" size={20} />
-                  <span>trinetlayer@gmail.com</span>
+                  <span>team@trinetlayer.com</span>
                   <Icon name="ExternalLink" size={16} className="opacity-50 group-hover:opacity-100 transition-opacity" />
                 </a>
               </div>
