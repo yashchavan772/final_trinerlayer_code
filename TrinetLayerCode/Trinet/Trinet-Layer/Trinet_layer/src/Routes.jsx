@@ -14,7 +14,6 @@ import OTPBypass from './pages/otp-bypass';
 import SQLInjection from './pages/sql-injection';
 import DependencyConfusion from './pages/dependency-confusion';
 import LiveExploitSandbox from './pages/live-exploit-sandbox';
-import CVEScanner from './pages/cve-scanner';
 import SubdomainScanner from './pages/subdomain-scanner';
 import JSAnalyzer from './pages/js-analyzer';
 import AISecurityOverview from './pages/ai-security-overview';
@@ -44,7 +43,6 @@ const Routes = () => {
         <Route path="/otp-bypass" element={<OTPBypass />} />
         <Route path="/dependency-confusion" element={<DependencyConfusion />} />
         <Route path="/live-exploit-sandbox" element={<LiveExploitSandbox />} />
-        <Route path="/cve-scanner" element={<CVEScanner />} />
         <Route path="/subdomain-scanner" element={<SubdomainScanner />} />
         <Route path="/js-analyzer" element={<JSAnalyzer />} />
         <Route path="/ai-security-overview" element={<AISecurityOverview />} />

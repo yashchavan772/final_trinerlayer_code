@@ -71,13 +71,6 @@ const Sidebar = ({ isCollapsed = false }) => {
       badge: 'New'
     },
     {
-      label: 'CVE Scanner',
-      path: '/cve-scanner',
-      icon: 'Shield',
-      tooltip: 'Enterprise-grade CVE vulnerability scanning',
-      badge: 'New'
-    },
-    {
       label: 'Subdomain Scanner',
       path: '/subdomain-scanner',
       icon: 'Globe',

@@ -18,7 +18,6 @@ const Breadcrumb = () => {
     'otp-bypass-hub': 'OTP Bypass Hub',
     'payload-vault': 'Payload Vault',
     'live-exploit-sandbox': 'Live Sandbox',
-    'cve-scanner': 'CVE Scanner',
     'subdomain-scanner': 'Subdomain Scanner',
     'js-analyzer': 'JS Analyzer',
     'ai-security-overview': 'AI Security',

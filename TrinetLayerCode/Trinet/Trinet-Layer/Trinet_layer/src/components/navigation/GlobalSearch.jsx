@@ -94,13 +94,6 @@ const GlobalSearch = () => {
       icon: 'Terminal'
     },
     {
-      title: 'CVE Scanner',
-      path: '/cve-scanner',
-      category: 'Tools',
-      description: 'Enterprise-grade CVE vulnerability scanning',
-      icon: 'Shield'
-    },
-    {
       title: 'Subdomain Scanner',
       path: '/subdomain-scanner',
       category: 'Tools',
