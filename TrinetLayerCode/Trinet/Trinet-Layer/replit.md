@@ -177,6 +177,79 @@ Comprehensive feature showcase explaining scanner capabilities without source di
 - Active: Intelligent Probing & Validation
 - Historical: Archive & Time Machine Analysis
 
+### JS Analyzer (Bug Bounty-Quality Detection)
+- **Backend**: Python FastAPI with async analysis
+- **Located at**: `/js-analyzer` route
+
+#### Scan Modes
+1. **FAST Mode** (120s timeout)
+   - JS discovery via Wayback Machine + live crawling
+   - Secret/endpoint analysis
+   - 100 JS files max
+
+2. **PRO Mode** (300s timeout)
+   - Auto-enables subdomain enumeration
+   - JS deobfuscation
+   - 200 JS files max
+   - Comprehensive analysis across subdomains
+
+#### Detection Categories (70+ patterns)
+1. **Cloud & Infrastructure Secrets** (Critical)
+   - AWS Access Keys, Secret Keys, Session Tokens
+   - GCP API Keys, Service Accounts
+   - Azure Connection Strings, Storage Keys
+   - Firebase, Supabase, DigitalOcean, Cloudflare
+
+2. **API Keys & Auth Secrets** (Critical/High)
+   - JWT Tokens (validated format)
+   - Bearer/OAuth/Refresh Tokens
+   - Session Tokens, CSRF Tokens
+   - Generic API Keys with entropy validation
+
+3. **Payment Secrets** (Critical)
+   - Stripe Live Keys (test keys downgraded)
+   - Razorpay, PayPal credentials
+   - Webhook secrets
+
+4. **Database Credentials** (Critical)
+   - MongoDB, PostgreSQL, MySQL connection strings
+   - Redis, Elasticsearch URLs
+
+5. **Cryptographic Material** (Critical)
+   - RSA/EC Private Keys
+   - JWT Signing Secrets
+   - Encryption/Signing Keys
+
+6. **Endpoints** (High/Medium)
+   - Admin/Internal endpoints
+   - REST/GraphQL APIs
+   - WebSocket URLs
+   - Internal IP URLs
+
+7. **Dangerous Patterns** (context-aware)
+   - eval(), innerHTML, document.write
+   - Only flagged if user input flows detected
+
+8. **Auth Issues** (High)
+   - JWT in localStorage/sessionStorage
+   - Hardcoded admin/staff flags
+   - Client-side auth checks
+
+#### False Positive Reduction
+- **Entropy validation**: Per-secret-type thresholds
+- **Placeholder filtering**: Detects test/mock/example values
+- **Test key identification**: sandbox/test keys severity downgraded
+- **Vendor code suppression**: Skips jQuery, React, CDN files
+- **Third-party suppression**: Only analyzes target domain code
+- **Context awareness**: Detects comments, test code context
+- **CDN IP filtering**: Suppresses known CDN IP ranges
+
+#### API Response
+- Findings sorted by severity + risk score
+- Suppressed findings with reasons (transparency)
+- Summary: secrets, endpoints, dangerous patterns, auth issues
+- Test value flagging for manual review
+
 ## External Dependencies
 
 ### Core Services
