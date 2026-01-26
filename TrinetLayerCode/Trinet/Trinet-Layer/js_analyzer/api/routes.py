@@ -1,4 +1,4 @@
-"""API routes for JS Analyzer."""
+"""API routes for JS Analyzer with bug bounty-quality detection."""
 
 import asyncio
 import logging
@@ -15,7 +15,7 @@ from ..preprocessing import preprocess_js, JSPreprocessor
 from ..analyzer import JSAnalyzerEngine, analyze_js_content
 from ..scoring import calculate_risk_score, RiskLevel
 from ..reports import generate_report, ReportFormat
-from ..utils.validators import validate_domain
+from ..utils.validators import validate_domain, is_vendor_js
 
 logger = logging.getLogger(__name__)
 
@@ -31,9 +31,12 @@ class ScanRequest(BaseModel):
     domain: str = Field(..., min_length=1, max_length=253)
     mode: ScanMode = ScanMode.FAST
     skip_vendor: bool = True
-    include_subdomains: bool = False
+    include_subdomains: Optional[bool] = None
     scope_include: Optional[List[str]] = None
     scope_exclude: Optional[List[str]] = None
+    suppress_third_party: bool = True
+    suppress_test_keys: bool = True
+    min_confidence: float = Field(default=0.5, ge=0.0, le=1.0)
 
 
 class FindingResponse(BaseModel):
@@ -48,6 +51,15 @@ class FindingResponse(BaseModel):
     description: str
     security_tag: Optional[str] = None
     risk_score: Optional[float] = None
+    is_test_value: bool = False
+
+
+class SuppressedFinding(BaseModel):
+    rule_id: str
+    rule_name: str
+    category: str
+    suppression_reason: str
+    file_url: str
 
 
 class ScanSummary(BaseModel):
@@ -61,6 +73,7 @@ class ScanSummary(BaseModel):
     endpoints_found: int = 0
     dangerous_patterns: int = 0
     auth_issues: int = 0
+    suppressed_count: int = 0
 
 
 class ScanResponse(BaseModel):
@@ -69,9 +82,11 @@ class ScanResponse(BaseModel):
     mode: str
     status: str
     js_files_analyzed: int = 0
+    js_files_skipped: int = 0
     subdomains_checked: int = 0
     summary: ScanSummary
     findings: List[FindingResponse] = []
+    suppressed_findings: List[SuppressedFinding] = []
     execution_time_seconds: float = 0
     disclaimer: str = "Only scan domains you own or have authorization to test."
 
@@ -90,10 +105,17 @@ PRO_MODE_TIMEOUT = 300
 @router.post("/scan", response_model=ScanResponse)
 async def run_js_scan(request: ScanRequest):
     """
-    Run JavaScript analysis scan.
+    Run JavaScript analysis scan with bug bounty-quality detection.
     
-    - FAST mode: JS discovery + secret/endpoint analysis only
-    - PRO mode: Subdomain enumeration + comprehensive JS analysis
+    - FAST mode: JS discovery + secret/endpoint analysis (120s timeout)
+    - PRO mode: Subdomain enumeration + comprehensive JS analysis + deobfuscation (300s timeout)
+    
+    Features:
+    - Entropy-based secret validation
+    - Context awareness (comments, tests, vendor code)
+    - Third-party code suppression
+    - Test key identification
+    - False positive reduction
     """
     start_time = asyncio.get_event_loop().time()
     scan_id = str(uuid.uuid4())
@@ -103,17 +125,22 @@ async def run_js_scan(request: ScanRequest):
         raise HTTPException(status_code=400, detail=error_msg)
     
     timeout = PRO_MODE_TIMEOUT if request.mode == ScanMode.PRO else FAST_MODE_TIMEOUT
+    is_pro_mode = request.mode == ScanMode.PRO
     
     summary = ScanSummary()
     all_findings: List[FindingResponse] = []
+    all_suppressed: List[SuppressedFinding] = []
     js_files_analyzed = 0
+    js_files_skipped = 0
     subdomains_checked = 0
     
     try:
         async with asyncio.timeout(timeout):
             subdomains = [normalized_domain]
             
-            if request.mode == ScanMode.PRO and request.include_subdomains:
+            should_scan_subdomains = request.include_subdomains if request.include_subdomains is not None else is_pro_mode
+            
+            if is_pro_mode and should_scan_subdomains:
                 logger.info(f"PRO mode: Enumerating subdomains for {normalized_domain}")
                 subdomain_result = await enumerate_subdomains(
                     normalized_domain, 
@@ -123,20 +150,20 @@ async def run_js_scan(request: ScanRequest):
                 if subdomain_result.get("success") and subdomain_result.get("subdomains"):
                     subdomains = subdomain_result["subdomains"][:50]
                     subdomains_checked = len(subdomains)
-                    logger.info(f"Found {subdomains_checked} alive subdomains")
+                    logger.info(f"Found {subdomains_checked} alive subdomains for PRO mode scanning")
             
             logger.info(f"Discovering JS files for {normalized_domain}")
             
             wayback_task = discover_wayback_js(
                 normalized_domain, 
                 skip_vendor=request.skip_vendor,
-                max_files=200
+                max_files=200 if is_pro_mode else 100
             )
             crawl_task = discover_live_js(
                 normalized_domain,
-                subdomains=subdomains if request.mode == ScanMode.PRO else None,
+                subdomains=subdomains if is_pro_mode else None,
                 skip_vendor=request.skip_vendor,
-                max_js_files=100
+                max_js_files=100 if is_pro_mode else 50
             )
             
             wayback_result, crawl_result = await asyncio.gather(
@@ -157,14 +184,19 @@ async def run_js_scan(request: ScanRequest):
             if request.scope_exclude:
                 js_urls = {u for u in js_urls if not any(exc in u for exc in request.scope_exclude)}
             
-            js_url_list = list(js_urls)[:150]
+            if request.skip_vendor:
+                original_count = len(js_urls)
+                js_urls = {u for u in js_urls if not is_vendor_js(u)}
+                js_files_skipped = original_count - len(js_urls)
             
-            logger.info(f"Discovered {len(js_url_list)} unique JS files")
+            js_url_list = list(js_urls)[:200 if is_pro_mode else 100]
+            
+            logger.info(f"Discovered {len(js_url_list)} unique JS files (skipped {js_files_skipped} vendor files)")
             
             if js_url_list:
                 preprocessor = JSPreprocessor(
                     beautify=True,
-                    deobfuscate=request.mode == ScanMode.PRO
+                    deobfuscate=is_pro_mode
                 )
                 processed_files = await preprocessor.process_urls(js_url_list)
                 
@@ -173,14 +205,23 @@ async def run_js_scan(request: ScanRequest):
                     check_endpoints=True,
                     check_dangerous=True,
                     check_auth=True,
-                    min_confidence=0.5,
-                    mask_secrets=False
+                    min_confidence=request.min_confidence,
+                    mask_secrets=False,
+                    target_domain=normalized_domain,
+                    suppress_third_party=request.suppress_third_party,
+                    suppress_test_values=request.suppress_test_keys,
+                    suppress_vendor=request.skip_vendor,
+                    pro_mode=is_pro_mode
                 )
                 
                 for processed in processed_files:
                     if processed.processed and processed.content:
                         js_files_analyzed += 1
                         result = engine.analyze(processed.content, processed.url)
+                        
+                        if result.is_vendor_file or result.is_third_party:
+                            js_files_skipped += 1
+                            continue
                         
                         for finding in result.findings:
                             risk = calculate_risk_score(
@@ -201,7 +242,8 @@ async def run_js_scan(request: ScanRequest):
                                 file_url=finding.file_url,
                                 description=finding.description,
                                 security_tag=finding.security_tag,
-                                risk_score=risk.score
+                                risk_score=risk.score,
+                                is_test_value=finding.is_test_value
                             ))
                             
                             if finding.severity == "critical":
@@ -215,12 +257,22 @@ async def run_js_scan(request: ScanRequest):
                             else:
                                 summary.info += 1
                         
+                        for suppressed in result.suppressed_findings:
+                            all_suppressed.append(SuppressedFinding(
+                                rule_id=suppressed.rule_id,
+                                rule_name=suppressed.rule_name,
+                                category=suppressed.category,
+                                suppression_reason=suppressed.suppression_reason or "Unknown",
+                                file_url=suppressed.file_url
+                            ))
+                        
                         summary.secrets_found += result.secrets_count
                         summary.endpoints_found += result.endpoints_count
                         summary.dangerous_patterns += result.dangerous_count
                         summary.auth_issues += result.auth_issues_count
             
             summary.total_findings = len(all_findings)
+            summary.suppressed_count = len(all_suppressed)
             
             all_findings.sort(key=lambda f: (
                 {"critical": 0, "high": 1, "medium": 2, "low": 3, "info": 4}.get(f.severity, 5),
@@ -235,9 +287,11 @@ async def run_js_scan(request: ScanRequest):
             mode=request.mode.value,
             status="completed",
             js_files_analyzed=js_files_analyzed,
+            js_files_skipped=js_files_skipped,
             subdomains_checked=subdomains_checked,
             summary=summary,
             findings=all_findings[:100],
+            suppressed_findings=all_suppressed[:50],
             execution_time_seconds=round(execution_time, 2)
         )
         
