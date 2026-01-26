@@ -1231,7 +1231,7 @@ const SQLInjectionVulnerabilityDetails = () => {
             <VulnerabilityHeader
               title="SQL Injection (SQLi)"
               severity="critical"
-              lastUpdated="Jan 16, 2026"
+              lastUpdated="Everyday"
             />
 
             {/* SQL Type Selector */}

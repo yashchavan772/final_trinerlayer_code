@@ -615,7 +615,7 @@ company-utils==1.0.0 \\
             <VulnerabilityHeader
               title="Dependency Confusion (Substitution Attack)"
               severity="critical"
-              lastUpdated="Jan 16, 2026"
+              lastUpdated="Everyday"
             />
 
             {/* Mode Toggle */}

@@ -333,7 +333,7 @@ const OTPBypassDetails = () => {
             <VulnerabilityHeader
               title="OTP Bypass & Authentication Logic Flaws"
               severity="high"
-              lastUpdated="Jan 16, 2026"
+              lastUpdated="Everyday"
             />
 
             <ExplanationCard explanation={explanation} />

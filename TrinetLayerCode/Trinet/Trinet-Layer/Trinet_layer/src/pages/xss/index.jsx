@@ -783,7 +783,7 @@ const XSSVulnerabilityDetails = () => {
             <VulnerabilityHeader
               title="Cross-Site Scripting (XSS)"
               severity="high"
-              lastUpdated="Jan 16, 2026"
+              lastUpdated="Everyday"
             />
 
             {/* XSS Type Selector */}

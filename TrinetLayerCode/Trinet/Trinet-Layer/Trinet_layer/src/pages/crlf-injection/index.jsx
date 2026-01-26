@@ -22,7 +22,7 @@ const CRLFInjectionDetails = () => {
     title: "CRLF Injection",
     description: "CRLF (Carriage Return Line Feed) injection is a web security vulnerability that allows attackers to inject special characters into HTTP headers, enabling HTTP response splitting, cache poisoning, and log injection attacks. By manipulating newline characters, attackers can control server responses and compromise application security.",
     severity: "high",
-    lastUpdated: "January 16, 2026"
+    lastUpdated: "Everyday"
   };
 
   const explanationCards = [
