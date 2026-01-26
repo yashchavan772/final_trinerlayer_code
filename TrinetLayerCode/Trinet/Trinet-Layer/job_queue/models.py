@@ -15,7 +15,6 @@ class JobStatus(str, Enum):
 
 class JobType(str, Enum):
     SUBDOMAIN_SCAN = "subdomain_scan"
-    CVE_SCAN = "cve_scan"
     JS_ANALYSIS = "js_analysis"
 
 

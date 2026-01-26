@@ -9,9 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
-from cve_scanner.api.routes import router as cve_router
 from cve_scanner.models.database import init_db
-from cve_scanner.services.template_sync import templates_exist, sync_cve_templates
 from subdomain_scanner.api.routes import router as subdomain_router
 from js_analyzer.api.routes import router as js_analyzer_router
 from job_queue.api import router as job_router
@@ -35,19 +33,9 @@ async def lifespan(app: FastAPI):
     global START_TIME
     START_TIME = datetime.utcnow()
     
-    logger.info("Initializing CVE Scanner...")
+    logger.info("Initializing TrinetLayer Security API...")
     init_db()
     logger.info("Database initialized")
-    
-    if not templates_exist():
-        logger.info("No CVE templates found, initiating sync...")
-        result = sync_cve_templates()
-        if result["success"]:
-            logger.info(f"Template sync completed: {result['template_count']} templates")
-        else:
-            logger.warning(f"Template sync failed: {result['message']}")
-    else:
-        logger.info("CVE templates already available")
     
     logger.info("Initializing job queue...")
     register_all_handlers(job_manager)
@@ -58,11 +46,11 @@ async def lifespan(app: FastAPI):
     
     logger.info("Shutting down job queue...")
     await job_manager.shutdown()
-    logger.info("CVE Scanner shutting down...")
+    logger.info("TrinetLayer Security API shutting down...")
 
 app = FastAPI(
     title="TrinetLayer Security API",
-    description="Enterprise-grade security scanning: CVE Detection and Subdomain Enumeration",
+    description="Enterprise-grade security scanning: Subdomain Enumeration and JS Analysis",
     version="1.0.0",
     lifespan=lifespan
 )
@@ -75,7 +63,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(cve_router, prefix="/api")
 app.include_router(subdomain_router, prefix="/api/recon")
 app.include_router(js_analyzer_router, prefix="/api")
 app.include_router(job_router, prefix="/api")
@@ -162,8 +149,7 @@ async def health_check():
     
     components = {
         "database": db_health["status"],
-        "job_queue": "healthy" if queue_stats["running"] else "unhealthy",
-        "cve_templates": "healthy" if templates_exist() else "degraded"
+        "job_queue": "healthy" if queue_stats["running"] else "unhealthy"
     }
     
     overall_status = "healthy"
@@ -188,7 +174,6 @@ async def health_check():
         },
         "system": system,
         "endpoints": {
-            "cve_scanner": "/api/scan",
             "subdomain_enum": "/api/recon/subdomains",
             "js_analyzer": "/api/js-analyzer/scan",
             "job_queue": "/api/jobs",
