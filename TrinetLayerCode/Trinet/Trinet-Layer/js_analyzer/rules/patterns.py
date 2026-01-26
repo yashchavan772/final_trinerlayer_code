@@ -744,6 +744,457 @@ SECRET_PATTERNS = [
         min_length=3,
         description="Hardcoded Username"
     ),
+    SecurityPattern(
+        id="NPM_TOKEN",
+        name="NPM Authentication Token",
+        category="vcs",
+        pattern=re.compile(r'(?i)(?:npm[_-]?token|_authToken)\s*[:=]\s*["\']?([A-Za-z0-9_-]{36,})["\']?'),
+        severity="critical",
+        min_length=36,
+        min_entropy=4.0,
+        description="NPM Registry Authentication Token"
+    ),
+    SecurityPattern(
+        id="NPM_TOKEN_REGISTRY",
+        name="NPM Registry Token",
+        category="vcs",
+        pattern=re.compile(r'//registry\.npmjs\.org/:_authToken=([A-Za-z0-9_-]{36,})'),
+        severity="critical",
+        min_length=36,
+        description="NPM Registry Token in .npmrc format"
+    ),
+    SecurityPattern(
+        id="DOCKER_AUTH",
+        name="Docker Authentication",
+        category="vcs",
+        pattern=re.compile(r'(?i)(?:docker[_-]?(?:auth|token|password)|DOCKER_PASSWORD)\s*[:=]\s*["\']?([A-Za-z0-9_-]{20,})["\']?'),
+        severity="critical",
+        min_length=20,
+        min_entropy=3.5,
+        description="Docker Registry Authentication"
+    ),
+    SecurityPattern(
+        id="PYPI_TOKEN",
+        name="PyPI API Token",
+        category="vcs",
+        pattern=re.compile(r'pypi-[A-Za-z0-9_-]{50,}'),
+        severity="critical",
+        min_length=55,
+        min_entropy=4.0,
+        description="PyPI Package Repository Token"
+    ),
+    SecurityPattern(
+        id="TELEGRAM_BOT_TOKEN",
+        name="Telegram Bot Token",
+        category="saas",
+        pattern=re.compile(r'\d{8,10}:[A-Za-z0-9_-]{35}'),
+        severity="critical",
+        min_length=45,
+        min_entropy=4.0,
+        description="Telegram Bot API Token"
+    ),
+    SecurityPattern(
+        id="TELEGRAM_WEBHOOK",
+        name="Telegram Webhook URL",
+        category="saas",
+        pattern=re.compile(r'https://api\.telegram\.org/bot\d+:[A-Za-z0-9_-]+/[a-zA-Z]+'),
+        severity="high",
+        min_length=50,
+        description="Telegram Bot Webhook URL"
+    ),
+    SecurityPattern(
+        id="TEAMS_WEBHOOK",
+        name="Microsoft Teams Webhook",
+        category="saas",
+        pattern=re.compile(r'https://[a-z0-9-]+\.webhook\.office\.com/webhookb2/[a-f0-9-]+/[a-zA-Z0-9@]+/[a-f0-9-]+/[a-f0-9-]+'),
+        severity="high",
+        min_length=100,
+        description="Microsoft Teams Incoming Webhook URL"
+    ),
+    SecurityPattern(
+        id="LAUNCHDARKLY_SDK_KEY",
+        name="LaunchDarkly SDK Key",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:launchdarkly[_-]?(?:sdk[_-]?)?key|ld[_-]?sdk[_-]?key)\s*[:=]\s*["\']?(sdk-[a-f0-9-]{36})["\']?'),
+        severity="high",
+        min_length=40,
+        description="LaunchDarkly Feature Flag SDK Key"
+    ),
+    SecurityPattern(
+        id="LAUNCHDARKLY_API_KEY",
+        name="LaunchDarkly API Key",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:launchdarkly[_-]?api[_-]?key)\s*[:=]\s*["\']?(api-[a-f0-9-]{36})["\']?'),
+        severity="critical",
+        min_length=40,
+        description="LaunchDarkly API Access Key"
+    ),
+    SecurityPattern(
+        id="SPLITIO_API_KEY",
+        name="Split.io API Key",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:split[_-]?(?:io[_-]?)?(?:api[_-]?)?key)\s*[:=]\s*["\']?([a-z0-9]{50,})["\']?'),
+        severity="high",
+        min_length=50,
+        min_entropy=4.0,
+        description="Split.io Feature Flag API Key"
+    ),
+    SecurityPattern(
+        id="PLANETSCALE_TOKEN",
+        name="PlanetScale Database Token",
+        category="database",
+        pattern=re.compile(r'pscale_tkn_[A-Za-z0-9_-]{40,}'),
+        severity="critical",
+        min_length=50,
+        description="PlanetScale Database Access Token"
+    ),
+    SecurityPattern(
+        id="PLANETSCALE_PASSWORD",
+        name="PlanetScale Password",
+        category="database",
+        pattern=re.compile(r'pscale_pw_[A-Za-z0-9_-]{40,}'),
+        severity="critical",
+        min_length=50,
+        description="PlanetScale Database Password"
+    ),
+    SecurityPattern(
+        id="NEON_DB_CONNECTION",
+        name="Neon Database Connection",
+        category="database",
+        pattern=re.compile(r'postgres(?:ql)?://[^:]+:[^@]+@[a-z0-9-]+\.neon\.tech[^\s"\'<>]*'),
+        severity="critical",
+        min_length=50,
+        description="Neon Serverless Postgres Connection String"
+    ),
+    SecurityPattern(
+        id="ONESIGNAL_API_KEY",
+        name="OneSignal API Key",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:onesignal[_-]?(?:api[_-]?)?key|os[_-]?api[_-]?key)\s*[:=]\s*["\']?([a-f0-9-]{36})["\']?'),
+        severity="high",
+        min_length=36,
+        description="OneSignal Push Notification API Key"
+    ),
+    SecurityPattern(
+        id="ONESIGNAL_APP_ID",
+        name="OneSignal App ID",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:onesignal[_-]?app[_-]?id)\s*[:=]\s*["\']?([a-f0-9-]{36})["\']?'),
+        severity="medium",
+        min_length=36,
+        description="OneSignal Application ID"
+    ),
+    SecurityPattern(
+        id="EXPO_ACCESS_TOKEN",
+        name="Expo Access Token",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:expo[_-]?(?:access[_-]?)?token)\s*[:=]\s*["\']?([A-Za-z0-9_-]{40,})["\']?'),
+        severity="critical",
+        min_length=40,
+        min_entropy=4.0,
+        description="Expo React Native Access Token"
+    ),
+    SecurityPattern(
+        id="VERCEL_TOKEN",
+        name="Vercel Access Token",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:vercel[_-]?(?:access[_-]?)?token)\s*[:=]\s*["\']?([A-Za-z0-9]{24})["\']?'),
+        severity="critical",
+        min_length=24,
+        min_entropy=4.0,
+        description="Vercel Deployment Access Token"
+    ),
+    SecurityPattern(
+        id="NETLIFY_TOKEN",
+        name="Netlify Access Token",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:netlify[_-]?(?:access[_-]?)?token|netlify[_-]?auth[_-]?token)\s*[:=]\s*["\']?([A-Za-z0-9_-]{40,})["\']?'),
+        severity="critical",
+        min_length=40,
+        min_entropy=4.0,
+        description="Netlify Deployment Access Token"
+    ),
+    SecurityPattern(
+        id="SEGMENT_WRITE_KEY",
+        name="Segment Write Key",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:segment[_-]?write[_-]?key|analytics[_-]?write[_-]?key)\s*[:=]\s*["\']?([A-Za-z0-9]{32})["\']?'),
+        severity="high",
+        min_length=32,
+        description="Segment Analytics Write Key"
+    ),
+    SecurityPattern(
+        id="MIXPANEL_TOKEN",
+        name="Mixpanel Project Token",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:mixpanel[_-]?(?:project[_-]?)?token)\s*[:=]\s*["\']?([a-f0-9]{32})["\']?'),
+        severity="medium",
+        min_length=32,
+        description="Mixpanel Analytics Project Token"
+    ),
+    SecurityPattern(
+        id="MIXPANEL_API_SECRET",
+        name="Mixpanel API Secret",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:mixpanel[_-]?(?:api[_-]?)?secret)\s*[:=]\s*["\']?([a-f0-9]{32})["\']?'),
+        severity="critical",
+        min_length=32,
+        description="Mixpanel API Secret - full data access"
+    ),
+    SecurityPattern(
+        id="AMPLITUDE_API_KEY",
+        name="Amplitude API Key",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:amplitude[_-]?(?:api[_-]?)?key)\s*[:=]\s*["\']?([a-f0-9]{32})["\']?'),
+        severity="medium",
+        min_length=32,
+        description="Amplitude Analytics API Key"
+    ),
+    SecurityPattern(
+        id="GITHUB_ACTIONS_TOKEN",
+        name="GitHub Actions Token",
+        category="vcs",
+        pattern=re.compile(r'ghs_[A-Za-z0-9]{36}'),
+        severity="critical",
+        min_length=40,
+        description="GitHub Actions Workflow Token"
+    ),
+    SecurityPattern(
+        id="GITLAB_CI_TOKEN",
+        name="GitLab CI Token",
+        category="vcs",
+        pattern=re.compile(r'(?i)(?:gitlab[_-]?ci[_-]?token|ci[_-]?job[_-]?token)\s*[:=]\s*["\']?([A-Za-z0-9_-]{20,})["\']?'),
+        severity="critical",
+        min_length=20,
+        min_entropy=3.5,
+        description="GitLab CI/CD Job Token"
+    ),
+    SecurityPattern(
+        id="GITLAB_RUNNER_TOKEN",
+        name="GitLab Runner Token",
+        category="vcs",
+        pattern=re.compile(r'GR1348941[A-Za-z0-9_-]{20}'),
+        severity="critical",
+        min_length=28,
+        description="GitLab Runner Registration Token"
+    ),
+    SecurityPattern(
+        id="JENKINS_API_TOKEN",
+        name="Jenkins API Token",
+        category="vcs",
+        pattern=re.compile(r'(?i)(?:jenkins[_-]?(?:api[_-]?)?token|jenkins[_-]?crumb)\s*[:=]\s*["\']?([A-Fa-f0-9]{32,})["\']?'),
+        severity="critical",
+        min_length=32,
+        description="Jenkins API Access Token"
+    ),
+    SecurityPattern(
+        id="JENKINS_USER_TOKEN",
+        name="Jenkins User Token",
+        category="vcs",
+        pattern=re.compile(r'(?i)(?:jenkins[_-]?user[_-]?token)\s*[:=]\s*["\']?([a-f0-9]{32,})["\']?'),
+        severity="critical",
+        min_length=32,
+        description="Jenkins User API Token"
+    ),
+    SecurityPattern(
+        id="CIRCLECI_TOKEN",
+        name="CircleCI Token",
+        category="vcs",
+        pattern=re.compile(r'(?i)(?:circleci[_-]?token|circle[_-]?token)\s*[:=]\s*["\']?([a-f0-9]{40})["\']?'),
+        severity="critical",
+        min_length=40,
+        description="CircleCI API Token"
+    ),
+    SecurityPattern(
+        id="TRAVIS_TOKEN",
+        name="Travis CI Token",
+        category="vcs",
+        pattern=re.compile(r'(?i)(?:travis[_-]?(?:api[_-]?)?token)\s*[:=]\s*["\']?([A-Za-z0-9_-]{22})["\']?'),
+        severity="critical",
+        min_length=22,
+        description="Travis CI API Token"
+    ),
+    SecurityPattern(
+        id="AADHAAR_NUMBER",
+        name="Aadhaar Number (India)",
+        category="pii",
+        pattern=re.compile(r'(?i)(?:aadhaar|aadhar)[_-]?(?:no|number|num|id)?\s*[:=]\s*["\']?(\d{4}[\s-]?\d{4}[\s-]?\d{4})["\']?'),
+        severity="critical",
+        min_length=12,
+        description="Indian Aadhaar ID Number - Sensitive PII"
+    ),
+    SecurityPattern(
+        id="PAN_NUMBER",
+        name="PAN Number (India)",
+        category="pii",
+        pattern=re.compile(r'(?i)(?:pan)[_-]?(?:no|number|num|id|card)?\s*[:=]\s*["\']?([A-Z]{5}\d{4}[A-Z])["\']?'),
+        severity="critical",
+        min_length=10,
+        max_length=10,
+        description="Indian PAN Card Number - Sensitive PII"
+    ),
+    SecurityPattern(
+        id="SSN_NUMBER",
+        name="Social Security Number (US)",
+        category="pii",
+        pattern=re.compile(r'(?i)(?:ssn|social[_-]?security)[_-]?(?:no|number|num)?\s*[:=]\s*["\']?(\d{3}[-\s]?\d{2}[-\s]?\d{4})["\']?'),
+        severity="critical",
+        min_length=9,
+        description="US Social Security Number - Sensitive PII"
+    ),
+    SecurityPattern(
+        id="UUID_IN_ENDPOINT",
+        name="UUID in API Endpoint",
+        category="endpoint",
+        pattern=re.compile(r'["\'](?:/api/[^"\']*)?/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}["\']'),
+        severity="medium",
+        min_length=36,
+        description="Hardcoded UUID in endpoint - potential IDOR"
+    ),
+    SecurityPattern(
+        id="USER_ID_ENDPOINT",
+        name="User ID in API Endpoint",
+        category="endpoint",
+        pattern=re.compile(r'["\']/(?:api/)?(?:users?|accounts?|profiles?|members?)/(\d{1,10})["\']'),
+        severity="high",
+        min_length=1,
+        description="Numeric User ID in endpoint - potential IDOR"
+    ),
+    SecurityPattern(
+        id="ACCOUNT_ID_EXPOSED",
+        name="Exposed Account/Org ID",
+        category="config",
+        pattern=re.compile(r'(?i)(?:account[_-]?id|org[_-]?id|organization[_-]?id|tenant[_-]?id|workspace[_-]?id)\s*[:=]\s*["\']?([a-zA-Z0-9_-]{10,})["\']?'),
+        severity="medium",
+        min_length=10,
+        description="Exposed Account/Organization/Tenant ID"
+    ),
+    SecurityPattern(
+        id="ORDER_ID_EXPOSED",
+        name="Exposed Order/Transaction ID",
+        category="config",
+        pattern=re.compile(r'(?i)(?:order[_-]?id|transaction[_-]?id|txn[_-]?id|payment[_-]?id)\s*[:=]\s*["\']?([a-zA-Z0-9_-]{10,})["\']?'),
+        severity="medium",
+        min_length=10,
+        description="Hardcoded Order/Transaction ID - potential data exposure"
+    ),
+    SecurityPattern(
+        id="RABBITMQ_URL",
+        name="RabbitMQ Connection URL",
+        category="database",
+        pattern=re.compile(r'amqps?://[^\s"\'<>]+'),
+        severity="critical",
+        min_length=15,
+        description="RabbitMQ Message Queue Connection URL"
+    ),
+    SecurityPattern(
+        id="DATADOG_API_KEY",
+        name="Datadog API Key",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:datadog[_-]?(?:api[_-]?)?key|dd[_-]?api[_-]?key)\s*[:=]\s*["\']?([a-f0-9]{32})["\']?'),
+        severity="critical",
+        min_length=32,
+        description="Datadog Monitoring API Key"
+    ),
+    SecurityPattern(
+        id="DATADOG_APP_KEY",
+        name="Datadog Application Key",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:datadog[_-]?app[_-]?key|dd[_-]?app[_-]?key)\s*[:=]\s*["\']?([a-f0-9]{40})["\']?'),
+        severity="critical",
+        min_length=40,
+        description="Datadog Application Key"
+    ),
+    SecurityPattern(
+        id="HEROKU_API_KEY",
+        name="Heroku API Key",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:heroku[_-]?(?:api[_-]?)?key)\s*[:=]\s*["\']?([a-f0-9-]{36})["\']?'),
+        severity="critical",
+        min_length=36,
+        description="Heroku Platform API Key"
+    ),
+    SecurityPattern(
+        id="ALGOLIA_API_KEY",
+        name="Algolia API Key",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:algolia[_-]?(?:api[_-]?)?key|algolia[_-]?admin[_-]?key)\s*[:=]\s*["\']?([a-f0-9]{32})["\']?'),
+        severity="high",
+        min_length=32,
+        description="Algolia Search API Key"
+    ),
+    SecurityPattern(
+        id="PUSHER_KEY",
+        name="Pusher API Key",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:pusher[_-]?(?:api[_-]?)?key)\s*[:=]\s*["\']?([a-f0-9]{20})["\']?'),
+        severity="medium",
+        min_length=20,
+        description="Pusher Real-time API Key"
+    ),
+    SecurityPattern(
+        id="PUSHER_SECRET",
+        name="Pusher Secret",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:pusher[_-]?secret)\s*[:=]\s*["\']?([a-f0-9]{20})["\']?'),
+        severity="critical",
+        min_length=20,
+        description="Pusher API Secret"
+    ),
+    SecurityPattern(
+        id="INTERCOM_ACCESS_TOKEN",
+        name="Intercom Access Token",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:intercom[_-]?(?:access[_-]?)?token)\s*[:=]\s*["\']?([a-zA-Z0-9=_-]{60,})["\']?'),
+        severity="critical",
+        min_length=60,
+        description="Intercom API Access Token"
+    ),
+    SecurityPattern(
+        id="ZENDESK_TOKEN",
+        name="Zendesk API Token",
+        category="saas",
+        pattern=re.compile(r'(?i)(?:zendesk[_-]?(?:api[_-]?)?token)\s*[:=]\s*["\']?([A-Za-z0-9]{40})["\']?'),
+        severity="critical",
+        min_length=40,
+        description="Zendesk API Token"
+    ),
+    SecurityPattern(
+        id="SHOPIFY_ACCESS_TOKEN",
+        name="Shopify Access Token",
+        category="saas",
+        pattern=re.compile(r'shpat_[a-fA-F0-9]{32}'),
+        severity="critical",
+        min_length=38,
+        description="Shopify Admin API Access Token"
+    ),
+    SecurityPattern(
+        id="SHOPIFY_SHARED_SECRET",
+        name="Shopify Shared Secret",
+        category="saas",
+        pattern=re.compile(r'shpss_[a-fA-F0-9]{32}'),
+        severity="critical",
+        min_length=38,
+        description="Shopify Shared Secret"
+    ),
+    SecurityPattern(
+        id="SQUARE_ACCESS_TOKEN",
+        name="Square Access Token",
+        category="payment",
+        pattern=re.compile(r'sq0atp-[A-Za-z0-9_-]{22}'),
+        severity="critical",
+        min_length=29,
+        description="Square Payment API Access Token"
+    ),
+    SecurityPattern(
+        id="SQUARE_OAUTH_SECRET",
+        name="Square OAuth Secret",
+        category="payment",
+        pattern=re.compile(r'sq0csp-[A-Za-z0-9_-]{43}'),
+        severity="critical",
+        min_length=50,
+        description="Square OAuth Secret"
+    ),
 ]
 
 

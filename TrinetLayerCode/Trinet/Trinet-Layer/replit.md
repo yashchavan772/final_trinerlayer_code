@@ -193,7 +193,7 @@ Comprehensive feature showcase explaining scanner capabilities without source di
    - 200 JS files max
    - Comprehensive analysis across subdomains
 
-#### Detection Categories (70+ patterns)
+#### Detection Categories (149 patterns)
 1. **Cloud & Infrastructure Secrets** (Critical)
    - AWS Access Keys, Secret Keys, Session Tokens
    - GCP API Keys, Service Accounts
