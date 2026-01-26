@@ -42,20 +42,6 @@ class JobManager:
         )
         return await self.queue.submit(job)
     
-    async def submit_cve_scan(
-        self,
-        target_url: str,
-        scan_type: str = "quick"
-    ) -> str:
-        job = Job(
-            job_type=JobType.CVE_SCAN,
-            params={
-                "target_url": target_url,
-                "scan_type": scan_type
-            }
-        )
-        return await self.queue.submit(job)
-    
     async def submit_js_analysis(
         self,
         target_url: str,

@@ -16,11 +16,6 @@ class SubdomainScanRequest(BaseModel):
     advanced_config: Optional[Dict[str, bool]] = None
 
 
-class CVEScanRequest(BaseModel):
-    target_url: str = Field(..., min_length=1)
-    scan_type: str = Field(default="quick")
-
-
 class JSAnalysisRequest(BaseModel):
     target_url: str = Field(..., min_length=1)
     pro_mode: bool = Field(default=False)
@@ -64,20 +59,6 @@ async def submit_subdomain_scan(request: SubdomainScanRequest):
         job_id=job_id,
         status="pending",
         message=f"Subdomain scan job submitted for {normalized_domain}"
-    )
-
-
-@router.post("/cve-scan", response_model=JobSubmitResponse)
-async def submit_cve_scan(request: CVEScanRequest):
-    job_id = await job_manager.submit_cve_scan(
-        target_url=request.target_url,
-        scan_type=request.scan_type
-    )
-    
-    return JobSubmitResponse(
-        job_id=job_id,
-        status="pending",
-        message=f"CVE scan job submitted for {request.target_url}"
     )
 
 
