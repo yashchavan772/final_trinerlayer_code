@@ -1,7 +1,7 @@
 import React from 'react';
 
 const AnnouncementBanner = () => {
-  const message = "🔔 What's New on TrinetLayer: New features are live! Experience enhanced security, smarter workflows, and better performance—check them out today.";
+  const message = "🔔 New on TrinetLayer — Enhanced security tools & smarter workflows now live!";
 
   return (
     <div className="announcement-banner">
