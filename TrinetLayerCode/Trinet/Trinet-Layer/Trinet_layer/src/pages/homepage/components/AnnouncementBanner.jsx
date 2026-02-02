@@ -1,7 +1,7 @@
 import React from 'react';
 
 const AnnouncementBanner = () => {
-  const message = "🔔 New on TrinetLayer — Enhanced security tools & smarter workflows now live!";
+  const message = "🔔 New Features Available! Log in now to explore TrinetLayer.";
 
   return (
     <div className="announcement-banner">
@@ -50,7 +50,7 @@ const AnnouncementBanner = () => {
           display: flex;
           align-items: center;
           gap: 32px;
-          animation: scrollAnnouncement 20s linear infinite;
+          animation: scrollAnnouncement 12s linear infinite;
           white-space: nowrap;
           will-change: transform;
         }
@@ -92,7 +92,7 @@ const AnnouncementBanner = () => {
           
           .announcement-track {
             gap: 24px;
-            animation-duration: 18s;
+            animation-duration: 10s;
           }
         }
         
@@ -103,7 +103,7 @@ const AnnouncementBanner = () => {
           
           .announcement-track {
             gap: 20px;
-            animation-duration: 15s;
+            animation-duration: 8s;
           }
         }
       `}</style>
