@@ -71,7 +71,7 @@ const TerminalHero = () => {
             Your go-to toolkit for bug hunting. Real exploits, practical techniques, and battle-tested payloads. No fluff.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 flex-wrap">
             <Button
               variant="default"
               size="lg"
@@ -93,6 +93,16 @@ const TerminalHero = () => {
             >
               Access Payload Vault
             </Button>
+            
+            <a
+              href="https://app.trinetlayer.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-500/20 to-cyan-400/20 hover:from-cyan-500/30 hover:to-cyan-400/30 border border-cyan-500/40 hover:border-cyan-400/60 text-cyan-300 hover:text-cyan-200 font-medium text-sm rounded-lg transition-all duration-300 hover:shadow-[0_0_15px_rgba(0,234,255,0.3)]"
+            >
+              <Icon name="Sparkles" size={18} />
+              Explore the New Features
+            </a>
           </div>
         </div>
 
