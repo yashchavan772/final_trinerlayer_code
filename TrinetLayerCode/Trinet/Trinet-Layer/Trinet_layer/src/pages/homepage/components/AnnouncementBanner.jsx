@@ -17,10 +17,10 @@ const AnnouncementBanner = () => {
       <style>{`
         .announcement-banner {
           width: 100%;
-          background: linear-gradient(90deg, rgba(0, 234, 255, 0.1) 0%, rgba(0, 180, 216, 0.15) 50%, rgba(0, 234, 255, 0.1) 100%);
-          border-top: 1px solid rgba(0, 234, 255, 0.2);
-          border-bottom: 1px solid rgba(0, 234, 255, 0.2);
-          padding: 10px 0;
+          background: linear-gradient(90deg, rgba(0, 234, 255, 0.08) 0%, rgba(0, 180, 216, 0.12) 50%, rgba(0, 234, 255, 0.08) 100%);
+          border-top: 1px solid rgba(0, 234, 255, 0.15);
+          border-bottom: 1px solid rgba(0, 234, 255, 0.15);
+          padding: 6px 0;
           overflow: hidden;
           position: relative;
         }
@@ -49,23 +49,23 @@ const AnnouncementBanner = () => {
         .announcement-track {
           display: flex;
           align-items: center;
-          gap: 40px;
-          animation: scrollAnnouncement 45s linear infinite;
+          gap: 32px;
+          animation: scrollAnnouncement 20s linear infinite;
           white-space: nowrap;
           will-change: transform;
         }
         
         .announcement-text {
-          font-size: 14px;
-          font-weight: 600;
+          font-size: 12px;
+          font-weight: 500;
           color: #00eaff;
-          letter-spacing: 0.3px;
-          text-shadow: 0 0 10px rgba(0, 234, 255, 0.3);
+          letter-spacing: 0.2px;
+          text-shadow: 0 0 8px rgba(0, 234, 255, 0.25);
         }
         
         .announcement-spacer {
           color: rgba(0, 234, 255, 0.4);
-          font-size: 18px;
+          font-size: 14px;
         }
         
         @keyframes scrollAnnouncement {
@@ -83,27 +83,27 @@ const AnnouncementBanner = () => {
         
         @media (max-width: 768px) {
           .announcement-text {
-            font-size: 13px;
+            font-size: 11px;
           }
           
           .announcement-banner {
-            padding: 8px 0;
+            padding: 6px 0;
           }
           
           .announcement-track {
-            gap: 30px;
-            animation-duration: 35s;
+            gap: 24px;
+            animation-duration: 18s;
           }
         }
         
         @media (max-width: 480px) {
           .announcement-text {
-            font-size: 12px;
+            font-size: 10px;
           }
           
           .announcement-track {
-            gap: 24px;
-            animation-duration: 30s;
+            gap: 20px;
+            animation-duration: 15s;
           }
         }
       `}</style>
