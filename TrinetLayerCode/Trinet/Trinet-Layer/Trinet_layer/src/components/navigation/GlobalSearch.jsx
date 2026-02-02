@@ -228,32 +228,43 @@ const GlobalSearch = () => {
   };
 
   return (
-    <div ref={searchRef} className="relative w-full max-w-3xl mx-auto">
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <Icon name="Search" size={20} className="text-cyan-400/60" />
+    <div ref={searchRef} className="relative w-full max-w-4xl mx-auto">
+      <div className="flex items-center gap-3">
+        <div className="relative flex-1">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <Icon name="Search" size={20} className="text-cyan-400/60" />
+          </div>
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder="Search vulnerabilities, payloads, tools..."
+            value={query}
+            onChange={(e) => setQuery(e?.target?.value)}
+            onKeyDown={handleKeyDown}
+            onFocus={() => query?.trim()?.length > 0 && setIsOpen(true)}
+            className="w-full pl-12 pr-12 py-3.5 bg-[#0d1117]/90 backdrop-blur-md border border-cyan-500/20 rounded-xl text-cyan-50 placeholder-cyan-300/40 focus:outline-none focus:bg-[#0d1117] focus:border-cyan-400/50 focus:shadow-[0_0_20px_rgba(0,234,255,0.2)] hover:border-cyan-500/30 hover:shadow-[0_0_12px_rgba(0,234,255,0.1)] transition-all duration-300 text-sm"
+          />
+          {query && (
+            <button
+              onClick={() => {
+                setQuery('');
+                setIsOpen(false);
+              }}
+              className="absolute inset-y-0 right-0 pr-4 flex items-center text-cyan-400/50 hover:text-cyan-300 transition-colors duration-200"
+            >
+              <Icon name="X" size={18} />
+            </button>
+          )}
         </div>
-        <input
-          ref={inputRef}
-          type="text"
-          placeholder="Search vulnerabilities, payloads, tools..."
-          value={query}
-          onChange={(e) => setQuery(e?.target?.value)}
-          onKeyDown={handleKeyDown}
-          onFocus={() => query?.trim()?.length > 0 && setIsOpen(true)}
-          className="w-full pl-12 pr-12 py-3.5 bg-[#0d1117]/90 backdrop-blur-md border border-cyan-500/20 rounded-xl text-cyan-50 placeholder-cyan-300/40 focus:outline-none focus:bg-[#0d1117] focus:border-cyan-400/50 focus:shadow-[0_0_20px_rgba(0,234,255,0.2)] hover:border-cyan-500/30 hover:shadow-[0_0_12px_rgba(0,234,255,0.1)] transition-all duration-300 text-sm"
-        />
-        {query && (
-          <button
-            onClick={() => {
-              setQuery('');
-              setIsOpen(false);
-            }}
-            className="absolute inset-y-0 right-0 pr-4 flex items-center text-cyan-400/50 hover:text-cyan-300 transition-colors duration-200"
-          >
-            <Icon name="X" size={18} />
-          </button>
-        )}
+        <a
+          href="https://app.trinetlayer.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 px-4 sm:px-5 py-3.5 bg-gradient-to-r from-cyan-500 to-cyan-400 hover:from-cyan-400 hover:to-cyan-300 text-[#0d1117] font-semibold text-sm rounded-xl transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,234,255,0.4)] whitespace-nowrap shrink-0"
+        >
+          <Icon name="LogIn" size={18} />
+          <span className="hidden sm:inline">Login</span>
+        </a>
       </div>
 
       {isOpen && results?.length > 0 && (
