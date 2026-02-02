@@ -207,6 +207,15 @@ const Sidebar = ({ isCollapsed = false }) => {
               Attack Surface Lab
             </span>
           </div>
+          <a
+            href="https://app.trinetlayer.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-3 py-1.5 bg-accent hover:bg-accent/90 text-background font-medium text-sm rounded-lg transition-all duration-200 hover:shadow-glow-md whitespace-nowrap"
+          >
+            <Icon name="LogIn" size={16} />
+            <span className="hidden sm:inline">Login</span>
+          </a>
         </div>
 
         <nav className="sidebar-nav">
