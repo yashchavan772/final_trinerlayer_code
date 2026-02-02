@@ -2,6 +2,7 @@ import React from 'react';
 import Sidebar from '../../components/navigation/Sidebar';
 import Breadcrumb from '../../components/navigation/Breadcrumb';
 import GlobalSearch from '../../components/navigation/GlobalSearch';
+import AnnouncementBanner from './components/AnnouncementBanner';
 import TerminalHero from './components/TerminalHero';
 import FeatureGrid from './components/FeatureGrid';
 import VulnerabilityQuickAccess from './components/VulnerabilityQuickAccess';
@@ -24,6 +25,7 @@ const Homepage = () => {
               <GlobalSearch />
             </div>
           </div>
+          <AnnouncementBanner />
         </div>
 
         <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
