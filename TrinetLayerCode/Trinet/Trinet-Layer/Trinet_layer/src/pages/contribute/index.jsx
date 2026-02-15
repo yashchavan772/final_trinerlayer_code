@@ -84,14 +84,14 @@ const Contribute = () => {
       <div className="min-h-screen bg-background flex">
         <Sidebar />
 
-        <main className="flex-1 lg:ml-64">
+        <main className="flex-1 lg:ml-[280px] lg:w-[calc(100%-280px)] overflow-x-hidden">
           <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border">
-            <div className="px-4 sm:px-6 lg:px-8 py-4">
+            <div className="pl-16 pr-4 sm:pl-16 sm:pr-6 lg:px-8 py-4">
               <GlobalSearch />
             </div>
           </div>
 
-          <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+          <div className="pl-16 pr-4 sm:pl-16 sm:pr-6 lg:px-8 py-6 sm:py-8">
             <Breadcrumb
               items={[
                 { label: 'Home', path: '/' },

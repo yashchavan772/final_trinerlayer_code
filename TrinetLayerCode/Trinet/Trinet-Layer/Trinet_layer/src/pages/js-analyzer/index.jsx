@@ -58,7 +58,7 @@ const JSAnalyzer = () => {
     <div className="flex min-h-screen bg-gray-950">
       <Sidebar />
       
-      <main className="flex-1 ml-0 lg:ml-64 p-4 sm:p-6 lg:p-8 transition-all duration-300">
+      <main className="flex-1 lg:ml-[280px] lg:w-[calc(100%-280px)] py-4 pr-4 pl-16 sm:py-6 sm:pr-6 sm:pl-16 lg:p-8 transition-all duration-300 overflow-x-hidden">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-4 mb-8">
             <div className="p-3 bg-gradient-to-br from-emerald-600 to-cyan-600 rounded-xl">

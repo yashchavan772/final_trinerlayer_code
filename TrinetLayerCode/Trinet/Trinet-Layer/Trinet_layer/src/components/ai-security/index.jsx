@@ -25,7 +25,7 @@ const staggerContainer = {
 export const AISecurityLayout = ({ children }) => (
   <div className="flex min-h-screen bg-[#080b12]">
     <Sidebar />
-    <main className="flex-1 ml-0 lg:ml-64 transition-all duration-300">
+    <main className="flex-1 pl-12 sm:pl-14 lg:pl-0 lg:ml-[280px] lg:w-[calc(100%-280px)] transition-all duration-300 overflow-x-hidden">
       <div className="min-h-screen relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 right-0 w-[800px] h-[600px] bg-gradient-radial from-cyan-500/[0.03] via-transparent to-transparent" />
