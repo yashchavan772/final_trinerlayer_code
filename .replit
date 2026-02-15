@@ -44,6 +44,6 @@ externalPort = 8000
 
 [deployment]
 deploymentTarget = "static"
-run = ["python", "-m", "uvicorn", "cve_scanner.main:app", "--host", "0.0.0.0", "--port", "5000", "--app-dir", "TrinetLayerCode/Trinet/Trinet-Layer"]
+run = ["echo", "static site"]
 build = ["bash", "-c", "cd TrinetLayerCode/Trinet/Trinet-Layer/Trinet_layer && npm run build"]
 publicDir = "TrinetLayerCode/Trinet/Trinet-Layer/Trinet_layer/build"
