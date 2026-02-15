@@ -1,17 +1,26 @@
 import React from 'react';
 
 const AnnouncementBanner = () => {
-  const message = "🔔 New Features Available! Log in now to explore TrinetLayer.";
+  const message = "New Features Available! Log in now to explore TrinetLayer.";
+
+  const renderSet = () => (
+    <>
+      <span className="announcement-text">🔔 {message}</span>
+      <span className="announcement-spacer">•</span>
+      <span className="announcement-text">🔔 {message}</span>
+      <span className="announcement-spacer">•</span>
+      <span className="announcement-text">🔔 {message}</span>
+      <span className="announcement-spacer">•</span>
+    </>
+  );
 
   return (
     <div className="announcement-banner">
       <div className="announcement-track">
-        <span className="announcement-text">{message}</span>
-        <span className="announcement-spacer">•</span>
-        <span className="announcement-text">{message}</span>
-        <span className="announcement-spacer">•</span>
-        <span className="announcement-text">{message}</span>
-        <span className="announcement-spacer">•</span>
+        {renderSet()}
+      </div>
+      <div className="announcement-track announcement-track-clone" aria-hidden="true">
+        {renderSet()}
       </div>
       
       <style>{`
@@ -23,6 +32,7 @@ const AnnouncementBanner = () => {
           padding: 6px 0;
           overflow: hidden;
           position: relative;
+          display: flex;
         }
         
         .announcement-banner::before,
@@ -50,9 +60,14 @@ const AnnouncementBanner = () => {
           display: flex;
           align-items: center;
           gap: 32px;
-          animation: scrollAnnouncement 12s linear infinite;
           white-space: nowrap;
-          will-change: transform;
+          flex-shrink: 0;
+          animation: scrollAnnouncement 30s linear infinite;
+          padding-right: 32px;
+        }
+        
+        .announcement-track-clone {
+          animation: scrollAnnouncement 30s linear infinite;
         }
         
         .announcement-text {
@@ -73,7 +88,7 @@ const AnnouncementBanner = () => {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(-33.33%);
+            transform: translateX(-100%);
           }
         }
         
@@ -86,13 +101,10 @@ const AnnouncementBanner = () => {
             font-size: 11px;
           }
           
-          .announcement-banner {
-            padding: 6px 0;
-          }
-          
           .announcement-track {
             gap: 24px;
-            animation-duration: 10s;
+            padding-right: 24px;
+            animation-duration: 25s;
           }
         }
         
@@ -103,7 +115,8 @@ const AnnouncementBanner = () => {
           
           .announcement-track {
             gap: 20px;
-            animation-duration: 8s;
+            padding-right: 20px;
+            animation-duration: 20s;
           }
         }
       `}</style>
