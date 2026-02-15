@@ -44,6 +44,6 @@ externalPort = 8000
 
 [deployment]
 deploymentTarget = "static"
-run = ["echo", "static site"]
-build = ["bash", "-c", "cd TrinetLayerCode/Trinet/Trinet-Layer/Trinet_layer && npm run build"]
+run = ["echo", "static"]
+build = ["bash", "build.sh"]
 publicDir = "TrinetLayerCode/Trinet/Trinet-Layer/Trinet_layer/build"
