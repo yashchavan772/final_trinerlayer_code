@@ -19,7 +19,7 @@ const Breadcrumb = () => {
     'payload-vault': 'Payload Vault',
     'live-exploit-sandbox': 'Live Sandbox',
     'subdomain-scanner': 'Subdomain Scanner',
-    'js-analyzer': 'JS Analyzer',
+    'js-analyzer': 'GhostJS Analyzer',
     'ai-security-overview': 'AI Security',
     'ai-security-anatomy': 'AI Architecture',
     'ai-security-threat-modeling': 'Threat Modeling',

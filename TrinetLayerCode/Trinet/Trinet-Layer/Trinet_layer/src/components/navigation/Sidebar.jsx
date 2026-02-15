@@ -78,10 +78,10 @@ const Sidebar = ({ isCollapsed = false }) => {
       badge: 'New'
     },
     {
-      label: 'JS Analyzer',
+      label: 'GhostJS Analyzer',
       path: '/js-analyzer',
       icon: 'FileCode',
-      tooltip: 'Discover secrets, endpoints, and dangerous patterns in JavaScript files',
+      tooltip: 'Advanced JavaScript security analysis tool',
       badge: 'New'
     },
     {

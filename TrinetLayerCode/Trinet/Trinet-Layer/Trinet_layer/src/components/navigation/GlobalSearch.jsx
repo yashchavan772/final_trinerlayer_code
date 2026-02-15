@@ -101,10 +101,10 @@ const GlobalSearch = () => {
       icon: 'Globe'
     },
     {
-      title: 'JS Analyzer',
+      title: 'GhostJS Analyzer',
       path: '/js-analyzer',
       category: 'Tools',
-      description: 'Discover secrets, endpoints, and dangerous patterns in JavaScript files',
+      description: 'Advanced JavaScript security analysis tool',
       icon: 'FileCode'
     },
     {

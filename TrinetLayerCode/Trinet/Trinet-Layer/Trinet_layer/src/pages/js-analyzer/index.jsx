@@ -23,10 +23,10 @@ const JSAnalyzer = () => {
             </div>
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white font-mono">
-                JS Analyzer & Recon
+                GhostJS Analyzer
               </h1>
               <p className="text-gray-400 text-sm sm:text-base">
-                Discover secrets, endpoints, and dangerous patterns in JavaScript files
+                Advanced JavaScript security analysis tool
               </p>
             </div>
           </div>
