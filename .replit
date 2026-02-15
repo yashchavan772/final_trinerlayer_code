@@ -43,6 +43,7 @@ localPort = 8000
 externalPort = 8000
 
 [deployment]
-deploymentTarget = "autoscale"
+deploymentTarget = "static"
 run = ["python", "-m", "uvicorn", "cve_scanner.main:app", "--host", "0.0.0.0", "--port", "5000", "--app-dir", "TrinetLayerCode/Trinet/Trinet-Layer"]
-build = ["npm", "--prefix", "TrinetLayerCode/Trinet/Trinet-Layer/Trinet_layer", "run", "build"]
+build = ["bash", "-c", "cd TrinetLayerCode/Trinet/Trinet-Layer/Trinet_layer && npm run build"]
+publicDir = "TrinetLayerCode/Trinet/Trinet-Layer/Trinet_layer/build"
