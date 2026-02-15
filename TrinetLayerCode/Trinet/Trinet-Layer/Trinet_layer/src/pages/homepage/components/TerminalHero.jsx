@@ -83,16 +83,22 @@ const TerminalHero = () => {
               Explore Vulnerabilities
             </Button>
             
-            <Button
-              variant="outline"
-              size="lg"
-              iconName="Database"
-              iconPosition="left"
-              onClick={() => navigate('/payload-vault')}
+            <a
+              href="https://academy.trinetlayer.com/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full sm:w-auto"
             >
-              Access Payload Vault
-            </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                iconName="GraduationCap"
+                iconPosition="left"
+                className="w-full sm:w-auto pointer-events-none"
+              >
+                Certification Programs
+              </Button>
+            </a>
             
             <a
               href="https://app.trinetlayer.com/"
