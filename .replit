@@ -18,6 +18,10 @@ author = "agent"
 task = "workflow.run"
 args = "Trinet Layer Website"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Subdomain Scanner API"
+
 [[workflows.workflow]]
 name = "Trinet Layer Website"
 author = "agent"
@@ -29,6 +33,18 @@ outputType = "webview"
 task = "shell.exec"
 args = "cd \"TrinetLayerCode/Trinet/Trinet-Layer/Trinet_layer\" && npm start"
 waitForPort = 5000
+
+[[workflows.workflow]]
+name = "Subdomain Scanner API"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd TrinetLayerCode/Trinet/Trinet-Layer && python -m uvicorn subdomain_scanner.main:app --host 0.0.0.0 --port 8000"
+waitForPort = 8000
+
+[workflows.workflow.metadata]
+outputType = "console"
 
 [[ports]]
 localPort = 5000
@@ -43,7 +59,7 @@ localPort = 8000
 externalPort = 8000
 
 [deployment]
-deploymentTarget = "static"
-run = ["echo", "static"]
+deploymentTarget = "autoscale"
+run = ["bash", "-c", "cd TrinetLayerCode/Trinet/Trinet-Layer && python -m uvicorn subdomain_scanner.main:app --host 0.0.0.0 --port 5000"]
 build = ["bash", "build.sh"]
 publicDir = "TrinetLayerCode/Trinet/Trinet-Layer/Trinet_layer/build"
