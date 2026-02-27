@@ -25,7 +25,8 @@ import {
   Settings,
   Map,
   HardDrive,
-  CheckCircle
+  CheckCircle,
+  BarChart3
 } from 'lucide-react';
 import Sidebar from 'components/navigation/Sidebar';
 
@@ -51,6 +52,7 @@ const categories = [
   { icon: Map, color: 'text-lime-400', title: 'Source Map Exposure', desc: 'Accessible .js.map files exposing original unminified source code' },
   { icon: FileCode, color: 'text-fuchsia-400', title: 'API Endpoint Exposure', desc: 'Hidden /api/, /admin/, /internal/, /graphql, /debug routes in JS' },
   { icon: HardDrive, color: 'text-cyan-300', title: 'Cloud Storage Exposure', desc: 'S3 buckets, GCS URLs, Azure Blob, DigitalOcean Spaces, R2' },
+  { icon: BarChart3, color: 'text-amber-300', title: 'Analytics & Tracking', desc: 'CleverTap, Mixpanel, Amplitude, Segment, Heap, Hotjar IDs' },
 ];
 
 const JSAnalyzer = () => {
