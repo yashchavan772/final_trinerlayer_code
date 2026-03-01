@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import { Logo } from '../../../components/shared';
-import { XIcon, DiscordIcon, InstagramIcon, LinkedInIcon } from '../../../components/SocialIcons';
+import { XIcon, DiscordIcon, InstagramIcon, LinkedInIcon, YouTubeIcon } from '../../../components/SocialIcons';
 
 const PolicyModal = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
@@ -153,7 +153,8 @@ const Footer = () => {
     { id: 1, name: 'X', Icon: XIcon, url: 'https://x.com/Trinetlayer', ariaLabel: 'Follow us on X' },
     { id: 2, name: 'Instagram', Icon: InstagramIcon, url: 'https://www.instagram.com/trinet_layer', ariaLabel: 'Follow us on Instagram' },
     { id: 3, name: 'Discord', Icon: DiscordIcon, url: 'https://discord.com/invite/GwKjSYEu', ariaLabel: 'Join our Discord community' },
-    { id: 4, name: 'LinkedIn', Icon: LinkedInIcon, url: 'https://www.linkedin.com/company/trinet-layer/', ariaLabel: 'Connect on LinkedIn' }
+    { id: 4, name: 'LinkedIn', Icon: LinkedInIcon, url: 'https://www.linkedin.com/company/trinet-layer/', ariaLabel: 'Connect on LinkedIn' },
+    { id: 5, name: 'YouTube', Icon: YouTubeIcon, url: 'https://www.youtube.com/@Trinet-Layer', ariaLabel: 'Subscribe on YouTube' }
   ];
 
   const footerLinks = [
