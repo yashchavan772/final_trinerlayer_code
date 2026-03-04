@@ -184,6 +184,12 @@ const Footer = () => {
     }
   ];
 
+  const contactSection = {
+    title: 'Contact Us',
+    description: 'Looking for VAPT services or collaboration? Reach out to us.',
+    email: 'team@trinetlayer.com'
+  };
+
   const handleLinkClick = (link, e) => {
     if (link.action) {
       e.preventDefault();
@@ -195,7 +201,7 @@ const Footer = () => {
     <>
       <footer className="border-t border-border bg-surface mt-6 sm:mt-8 md:mt-10 lg:mt-12">
         <div className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8 mb-6 sm:mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6 sm:gap-8 mb-6 sm:mb-8">
             <div className="lg:col-span-2">
               <div className="flex items-center gap-2.5 sm:gap-3 mb-4 sm:mb-5">
                 <div className="footer-logo w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 flex items-center justify-center">
@@ -250,6 +256,21 @@ const Footer = () => {
                 </ul>
               </div>
             ))}
+
+            <div>
+              <h4 className="text-sm sm:text-base font-semibold text-foreground mb-3">
+                {contactSection.title}
+              </h4>
+              <p className="text-xs sm:text-sm text-muted-foreground mb-3">
+                {contactSection.description}
+              </p>
+              <a
+                href={`mailto:${contactSection.email}`}
+                className="text-xs sm:text-sm text-accent hover:text-cyan-300 transition-colors duration-250 font-medium"
+              >
+                {contactSection.email}
+              </a>
+            </div>
           </div>
 
           <div className="pt-6 border-t border-border">
