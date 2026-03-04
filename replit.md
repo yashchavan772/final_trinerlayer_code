@@ -4,7 +4,7 @@
 
 TrinetLayer is a cybersecurity education and security scanning platform designed for vulnerability research, exploit payloads, and attack techniques. It serves as a "Bug Hunter Vault" providing educational content for security researchers and penetration testers, combining interactive learning environments with real security scanning capabilities.
 
-The platform consists of a React frontend for the educational interface and Python FastAPI backends powering three security scanning modules: CVE detection, subdomain enumeration, and JavaScript file analysis.
+The platform consists of a React frontend for the educational interface and Python FastAPI backends powering two security scanning modules: subdomain enumeration and JavaScript file analysis.
 
 ## User Preferences
 
@@ -33,21 +33,13 @@ Preferred communication style: Simple, everyday language.
 
 ### Background Job Queue (`job_queue/`)
 - In-memory async job queue with configurable workers (default: 3)
-- Supports subdomain scans, CVE scans, and JS analysis
+- Supports subdomain scans and JS analysis
 - Job lifecycle: PENDING → RUNNING → COMPLETED/FAILED/CANCELLED
 - Automatic cleanup of completed jobs after 24 hours
 - Max 1000 jobs in memory with LRU eviction
 - API endpoints: `/api/jobs/` for submission, status, results, cancellation
 
 ### Security Scanning Modules
-
-**CVE Scanner** (`cve_scanner/`)
-- Integrates ProjectDiscovery Nuclei for CVE detection
-- Year-based template organization (2025, 2026)
-- Automatic template sync from GitHub nuclei-templates repository
-- Scan lifecycle: PENDING → RUNNING → COMPLETED → FAILED
-- Detection-only scanning with no exploitation
-- URL validation blocking private IPs and localhost
 
 **Subdomain Scanner** (`subdomain_scanner/`)
 - Multi-source enumeration: Certificate Transparency (crt.sh), DNS bruteforce, Wayback Machine, Common Crawl
@@ -95,7 +87,6 @@ Preferred communication style: Simple, everyday language.
 
 ### Backend Dependencies
 - **PostgreSQL**: Primary database via `DATABASE_URL` environment variable
-- **Nuclei**: ProjectDiscovery's vulnerability scanner binary for CVE detection
 - **aiohttp**: Async HTTP client for external API queries
 - **dnspython**: DNS resolution for subdomain validation
 - **BeautifulSoup4**: HTML parsing for JS file extraction
@@ -104,4 +95,3 @@ Preferred communication style: Simple, everyday language.
 - **crt.sh**: Certificate Transparency log queries for subdomain discovery
 - **Wayback Machine CDX API**: Historical URL discovery for JS files and subdomains
 - **Common Crawl Index**: Web archive data for subdomain enumeration
-- **GitHub nuclei-templates**: CVE template synchronization
