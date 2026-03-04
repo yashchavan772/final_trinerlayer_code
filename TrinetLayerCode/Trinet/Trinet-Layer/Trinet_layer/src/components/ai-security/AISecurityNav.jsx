@@ -8,6 +8,7 @@ import {
   AlertTriangle, 
   Terminal, 
   FlaskConical,
+  Cpu,
   ChevronRight
 } from 'lucide-react';
 
@@ -17,7 +18,8 @@ const navItems = [
   { path: '/ai-security-threat-modeling', label: 'Threat Modeling', icon: Shield, shortLabel: 'Threats' },
   { path: '/ai-security-owasp-top10', label: 'OWASP Top 10', icon: AlertTriangle, shortLabel: 'OWASP' },
   { path: '/ai-security-prompts', label: 'Testing Prompts', icon: Terminal, shortLabel: 'Prompts' },
-  { path: '/ai-security-labs', label: 'AI Labs', icon: FlaskConical, shortLabel: 'Labs' }
+  { path: '/ai-security-labs', label: 'AI Labs', icon: FlaskConical, shortLabel: 'Labs' },
+  { path: '/ai-security-hack-the-ai', label: 'Hack The AI', icon: Cpu, shortLabel: 'Hack AI' }
 ];
 
 const AISecurityNav = ({ showProgress = false }) => {

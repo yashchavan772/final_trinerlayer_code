@@ -22,6 +22,7 @@ import AISecurityThreatModeling from './pages/ai-security-threat-modeling';
 import AISecurityOWASPTop10 from './pages/ai-security-owasp-top10';
 import AISecurityPrompts from './pages/ai-security-prompts';
 import AISecurityLabs from './pages/ai-security-labs';
+import AISecurityHackTheAI from './pages/ai-security-hack-the-ai';
 import { Lab1PromptInjection, Lab2Jailbreak, Lab3Hallucination, Lab4ExcessiveAgency, Lab5RAGPoisoning } from './pages/ai-security-labs/labs';
 import Contribute from './pages/contribute';
 
@@ -51,6 +52,7 @@ const Routes = () => {
         <Route path="/ai-security-owasp-top10" element={<AISecurityOWASPTop10 />} />
         <Route path="/ai-security-prompts" element={<AISecurityPrompts />} />
         <Route path="/ai-security-labs" element={<AISecurityLabs />} />
+        <Route path="/ai-security-hack-the-ai" element={<AISecurityHackTheAI />} />
         <Route path="/ai-security-labs/lab-1-prompt-injection" element={<Lab1PromptInjection />} />
         <Route path="/ai-security-labs/lab-2-jailbreak" element={<Lab2Jailbreak />} />
         <Route path="/ai-security-labs/lab-3-hallucination" element={<Lab3Hallucination />} />

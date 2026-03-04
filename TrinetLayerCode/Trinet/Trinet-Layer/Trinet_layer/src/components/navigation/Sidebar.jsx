@@ -127,6 +127,13 @@ const Sidebar = ({ isCollapsed = false }) => {
           icon: 'FlaskConical',
           tooltip: 'Hands-on AI security training labs',
           badge: 'New'
+        },
+        {
+          label: 'Hack The AI',
+          path: '/ai-security-hack-the-ai',
+          icon: 'Cpu',
+          tooltip: 'AI security simulation - try to break the AI',
+          badge: 'New'
         }
       ]
     }
