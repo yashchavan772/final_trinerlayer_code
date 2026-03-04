@@ -259,31 +259,10 @@ const AISecurityLabs = () => {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="mb-5 flex items-center justify-between"
-          >
-            <h2 className="text-[16px] font-semibold text-white">Available Labs</h2>
-            <span className="text-[12px] text-gray-500 font-medium">5 labs • ~75 min total</span>
-          </motion.div>
-
-          <div className="space-y-4">
-            {LABS.map((lab, index) => (
-              <LabCard 
-                key={lab.id} 
-                lab={lab} 
-                index={index}
-                completed={completedLabs.includes(lab.id)}
-              />
-            ))}
-          </div>
-
-          <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="mt-10 relative overflow-hidden rounded-2xl border border-cyan-500/20"
+            transition={{ delay: 0.15 }}
+            className="mt-8 mb-8 relative overflow-hidden rounded-2xl border border-cyan-500/20"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-[#0a1628] via-[#080d1a] to-[#0d0a1f]" />
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,234,255,0.06)_0%,transparent_70%)]" />
@@ -352,6 +331,27 @@ const AISecurityLabs = () => {
               <p className="text-gray-600 text-[11px] mt-4 tracking-wider uppercase">Powered by TrinetLayer</p>
             </div>
           </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="mb-5 flex items-center justify-between"
+          >
+            <h2 className="text-[16px] font-semibold text-white">Available Labs</h2>
+            <span className="text-[12px] text-gray-500 font-medium">5 labs • ~75 min total</span>
+          </motion.div>
+
+          <div className="space-y-4">
+            {LABS.map((lab, index) => (
+              <LabCard 
+                key={lab.id} 
+                lab={lab} 
+                index={index}
+                completed={completedLabs.includes(lab.id)}
+              />
+            ))}
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 15 }}
