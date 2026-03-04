@@ -15,7 +15,7 @@ The platform consists of:
 ## Directory / File Structure
 
 ```
-TrinetLayerCode/Trinet/Trinet-Layer/
+Trinet-Layer/
 ├── config.py                          # Central configuration (env vars, rate limits, job queue)
 ├── pyproject.toml                     # Python dependencies (FastAPI, uvicorn, aiohttp, dnspython, etc.)
 ├── pytest.ini                         # Test configuration
@@ -60,11 +60,9 @@ TrinetLayerCode/Trinet/Trinet-Layer/
     ├── tailwind.config.js             # TailwindCSS configuration
     ├── postcss.config.js              # PostCSS configuration
     ├── jsconfig.json                  # Module resolution (baseUrl: ./src)
-    ├── favicon.ico
     ├── build/                         # Production build output (generated)
     ├── public/                        # Static public assets
     │   ├── assets/
-    │   │   ├── favicon.ico
     │   │   ├── favicon.png
     │   │   └── logo.png
     │   ├── manifest.json
