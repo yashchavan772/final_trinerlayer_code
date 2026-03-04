@@ -16,7 +16,12 @@ import {
   Zap,
   BookOpen,
   Clock,
-  Target
+  Target,
+  ExternalLink,
+  Cpu,
+  Crosshair,
+  Trophy,
+  Infinity
 } from 'lucide-react';
 import Sidebar from 'components/navigation/Sidebar';
 import { AISecurityNav } from 'components/ai-security';
@@ -273,6 +278,80 @@ const AISecurityLabs = () => {
               />
             ))}
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mt-10 relative overflow-hidden rounded-2xl border border-cyan-500/20"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0a1628] via-[#080d1a] to-[#0d0a1f]" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,234,255,0.06)_0%,transparent_70%)]" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-40 h-[1px] bg-gradient-to-r from-transparent via-purple-400/50 to-transparent" />
+
+            <div className="relative z-10 p-6 sm:p-8 text-center">
+              <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-gradient-to-br from-cyan-500/15 to-purple-500/15 border border-cyan-500/25 flex items-center justify-center">
+                <Cpu className="w-7 h-7 text-cyan-400" strokeWidth={1.5} />
+              </div>
+
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-wider mb-2" style={{ fontFamily: "'Share Tech Mono', 'Fira Code', monospace" }}>
+                <span className="bg-gradient-to-r from-cyan-300 via-cyan-400 to-purple-400 bg-clip-text text-transparent" style={{ textShadow: '0 0 30px rgba(0,234,255,0.3)' }}>
+                  HACK THE AI
+                </span>
+              </h2>
+              <p className="text-purple-400/80 text-xs sm:text-sm tracking-[0.2em] uppercase mb-2">A TrinetLayer AI Security Simulation</p>
+              <p className="text-gray-400 text-sm sm:text-base mb-6">Break the AI Before It Learns You.</p>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-7 max-w-lg mx-auto">
+                <div className="bg-[#0a1020] border border-gray-700/30 rounded-xl p-3">
+                  <div className="flex items-center justify-center mb-1">
+                    <Crosshair className="w-4 h-4 text-cyan-400 mr-1.5" strokeWidth={1.5} />
+                    <span className="text-xl font-bold text-cyan-300" style={{ fontFamily: "'Share Tech Mono', monospace" }}>10</span>
+                  </div>
+                  <p className="text-[10px] sm:text-[11px] text-gray-500 uppercase tracking-wider">Attack Vectors</p>
+                </div>
+                <div className="bg-[#0a1020] border border-gray-700/30 rounded-xl p-3">
+                  <div className="flex items-center justify-center mb-1">
+                    <Target className="w-4 h-4 text-green-400 mr-1.5" strokeWidth={1.5} />
+                    <span className="text-xl font-bold text-green-300" style={{ fontFamily: "'Share Tech Mono', monospace" }}>3</span>
+                  </div>
+                  <p className="text-[10px] sm:text-[11px] text-gray-500 uppercase tracking-wider">Difficulty Modes</p>
+                </div>
+                <div className="bg-[#0a1020] border border-gray-700/30 rounded-xl p-3">
+                  <div className="flex items-center justify-center mb-1">
+                    <Trophy className="w-4 h-4 text-amber-400 mr-1.5" strokeWidth={1.5} />
+                    <span className="text-xl font-bold text-amber-300" style={{ fontFamily: "'Share Tech Mono', monospace" }}>5</span>
+                  </div>
+                  <p className="text-[10px] sm:text-[11px] text-gray-500 uppercase tracking-wider">Achievements</p>
+                </div>
+                <div className="bg-[#0a1020] border border-gray-700/30 rounded-xl p-3">
+                  <div className="flex items-center justify-center mb-1">
+                    <Infinity className="w-4 h-4 text-purple-400 mr-1.5" strokeWidth={1.5} />
+                    <span className="text-xl font-bold text-purple-300" style={{ fontFamily: "'Share Tech Mono', monospace" }}>∞</span>
+                  </div>
+                  <p className="text-[10px] sm:text-[11px] text-gray-500 uppercase tracking-wider">Prompt Variations</p>
+                </div>
+              </div>
+
+              <p className="text-gray-400 text-xs sm:text-sm mb-6 max-w-md mx-auto leading-relaxed">
+                Test your prompt injection skills against our AI defense system. Choose your clearance level — Beginner, Advanced, or Pro — and try to bypass OWASP LLM Top 10 security filters in real time.
+              </p>
+
+              <a
+                href="https://ai.trinetlayer.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 px-7 py-3 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 hover:from-cyan-500/30 hover:to-purple-500/30 border border-cyan-500/40 hover:border-cyan-400/60 rounded-xl text-cyan-300 hover:text-cyan-200 font-semibold text-sm tracking-wider uppercase transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,234,255,0.15)]"
+              >
+                <Zap className="w-4 h-4" />
+                Hack Now
+                <ExternalLink className="w-3.5 h-3.5 opacity-60" />
+              </a>
+
+              <p className="text-gray-600 text-[11px] mt-4 tracking-wider uppercase">Powered by TrinetLayer</p>
+            </div>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 15 }}
