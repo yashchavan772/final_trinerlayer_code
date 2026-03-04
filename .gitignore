@@ -1,0 +1,14 @@
+.replit
+replit.md
+build.sh
+attached_assets/
+.local/
+.cache/
+.upm/
+.config/
+.agents/
+.pythonlibs/
+uv.lock
+*.pyc
+__pycache__/
+.DS_Store
