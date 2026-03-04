@@ -15,7 +15,7 @@ Preferred communication style: Simple, everyday language.
 ### Frontend Architecture
 - **Framework**: React 18 with Vite as the build tool
 - **State Management**: Redux Toolkit for centralized application state
-- **Routing**: React Router v6 for declarative navigation
+- **Routing**: React Router v6 for declarative navigation with React.lazy() code splitting (30 route-based chunks)
 - **Styling**: TailwindCSS with CSS custom properties for theming (dark mode cybersecurity aesthetic)
 - **Animation**: Framer Motion for UI animations
 - **Form Handling**: React Hook Form for efficient form management

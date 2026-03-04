@@ -27,8 +27,7 @@ import {
   Database,
   Sparkles,
   Award,
-  Download,
-  FileSpreadsheet
+  Download
 } from 'lucide-react';
 import Sidebar from 'components/navigation/Sidebar';
 

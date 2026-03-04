@@ -1507,7 +1507,6 @@ const PayloadVault = () => {
   };
 
   const handleCopy = (id) => {
-    console.log(`Payload ${id} copied to clipboard`);
   };
 
   const groupedPayloads = useMemo(() => {

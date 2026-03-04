@@ -1,36 +1,51 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes as RouterRoutes, Route } from "react-router-dom";
 import ScrollToTop from "components/ScrollToTop";
 import ErrorBoundary from "components/ErrorBoundary";
-import NotFound from "pages/NotFound";
-import PayloadVault from './pages/payload-vault';
-import CRLFInjection from './pages/crlf-injection';
-import IDOR from './pages/idor';
-import VulnerabilitiesOverview from './pages/vulnerabilities-overview';
-import XSS from './pages/xss';
 import Homepage from './pages/homepage';
-import OTPBypassHub from './pages/otp-bypass-hub';
-import OTPBypass from './pages/otp-bypass';
-import SQLInjection from './pages/sql-injection';
-import DependencyConfusion from './pages/dependency-confusion';
-import LiveExploitSandbox from './pages/live-exploit-sandbox';
-import SubdomainScanner from './pages/subdomain-scanner';
-import JSAnalyzer from './pages/js-analyzer';
-import AISecurityOverview from './pages/ai-security-overview';
-import AISecurityAnatomy from './pages/ai-security-anatomy';
-import AISecurityThreatModeling from './pages/ai-security-threat-modeling';
-import AISecurityOWASPTop10 from './pages/ai-security-owasp-top10';
-import AISecurityPrompts from './pages/ai-security-prompts';
-import AISecurityLabs from './pages/ai-security-labs';
-import AISecurityHackTheAI from './pages/ai-security-hack-the-ai';
-import { Lab1PromptInjection, Lab2Jailbreak, Lab3Hallucination, Lab4ExcessiveAgency, Lab5RAGPoisoning } from './pages/ai-security-labs/labs';
-import Contribute from './pages/contribute';
+
+const NotFound = lazy(() => import("pages/NotFound"));
+const PayloadVault = lazy(() => import('./pages/payload-vault'));
+const CRLFInjection = lazy(() => import('./pages/crlf-injection'));
+const IDOR = lazy(() => import('./pages/idor'));
+const VulnerabilitiesOverview = lazy(() => import('./pages/vulnerabilities-overview'));
+const XSS = lazy(() => import('./pages/xss'));
+const OTPBypassHub = lazy(() => import('./pages/otp-bypass-hub'));
+const OTPBypass = lazy(() => import('./pages/otp-bypass'));
+const SQLInjection = lazy(() => import('./pages/sql-injection'));
+const DependencyConfusion = lazy(() => import('./pages/dependency-confusion'));
+const LiveExploitSandbox = lazy(() => import('./pages/live-exploit-sandbox'));
+const SubdomainScanner = lazy(() => import('./pages/subdomain-scanner'));
+const JSAnalyzer = lazy(() => import('./pages/js-analyzer'));
+const AISecurityOverview = lazy(() => import('./pages/ai-security-overview'));
+const AISecurityAnatomy = lazy(() => import('./pages/ai-security-anatomy'));
+const AISecurityThreatModeling = lazy(() => import('./pages/ai-security-threat-modeling'));
+const AISecurityOWASPTop10 = lazy(() => import('./pages/ai-security-owasp-top10'));
+const AISecurityPrompts = lazy(() => import('./pages/ai-security-prompts'));
+const AISecurityLabs = lazy(() => import('./pages/ai-security-labs'));
+const AISecurityHackTheAI = lazy(() => import('./pages/ai-security-hack-the-ai'));
+const Lab1PromptInjection = lazy(() => import('./pages/ai-security-labs/labs').then(m => ({ default: m.Lab1PromptInjection })));
+const Lab2Jailbreak = lazy(() => import('./pages/ai-security-labs/labs').then(m => ({ default: m.Lab2Jailbreak })));
+const Lab3Hallucination = lazy(() => import('./pages/ai-security-labs/labs').then(m => ({ default: m.Lab3Hallucination })));
+const Lab4ExcessiveAgency = lazy(() => import('./pages/ai-security-labs/labs').then(m => ({ default: m.Lab4ExcessiveAgency })));
+const Lab5RAGPoisoning = lazy(() => import('./pages/ai-security-labs/labs').then(m => ({ default: m.Lab5RAGPoisoning })));
+const Contribute = lazy(() => import('./pages/contribute'));
+
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-screen bg-[#080b12]">
+    <div className="flex flex-col items-center gap-3">
+      <div className="w-8 h-8 border-2 border-cyan-500/30 border-t-cyan-400 rounded-full animate-spin" />
+      <span className="text-sm text-gray-500 font-medium tracking-wide">Loading...</span>
+    </div>
+  </div>
+);
 
 const Routes = () => {
   return (
     <BrowserRouter>
       <ErrorBoundary>
       <ScrollToTop />
+      <Suspense fallback={<PageLoader />}>
       <RouterRoutes>
         <Route path="/" element={<Homepage />} />
         <Route path="/payload-vault" element={<PayloadVault />} />
@@ -61,6 +76,7 @@ const Routes = () => {
         <Route path="/contribute" element={<Contribute />} />
         <Route path="*" element={<NotFound />} />
       </RouterRoutes>
+      </Suspense>
       </ErrorBoundary>
     </BrowserRouter>
   );

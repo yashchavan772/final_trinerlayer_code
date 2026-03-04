@@ -8,9 +8,7 @@ import {
   Target,
   Zap,
   CheckCircle,
-  ArrowRight,
-  ChevronDown,
-  ExternalLink
+  ChevronDown
 } from 'lucide-react';
 import {
   AISecurityLayout,

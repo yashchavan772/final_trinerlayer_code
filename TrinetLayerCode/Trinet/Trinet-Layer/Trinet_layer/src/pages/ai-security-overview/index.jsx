@@ -9,7 +9,6 @@ import {
   Code,
   MessageSquare,
   Database,
-  Zap,
   Target,
   BookOpen,
   Building2,
