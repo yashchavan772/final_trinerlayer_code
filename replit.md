@@ -4,7 +4,7 @@
 
 TrinetLayer is a cybersecurity education and security scanning platform designed for vulnerability research, exploit payloads, and attack techniques. It serves as a "Bug Hunter Vault" providing educational content for security researchers and penetration testers, combining interactive learning environments with real security scanning capabilities.
 
-The platform consists of a React frontend for the educational interface and Python FastAPI backends powering two security scanning modules: subdomain enumeration and JavaScript file analysis.
+The platform consists of a React frontend for the educational interface and a Python FastAPI backend powering the subdomain enumeration scanner. The GhostJS Analyzer (JavaScript security analysis) is hosted externally at `app.trinetlayer.com`.
 
 ## User Preferences
 
@@ -33,7 +33,7 @@ Preferred communication style: Simple, everyday language.
 
 ### Background Job Queue (`job_queue/`)
 - In-memory async job queue with configurable workers (default: 3)
-- Supports subdomain scans and JS analysis
+- Supports subdomain scans
 - Job lifecycle: PENDING → RUNNING → COMPLETED/FAILED/CANCELLED
 - Automatic cleanup of completed jobs after 24 hours
 - Max 1000 jobs in memory with LRU eviction
@@ -50,13 +50,9 @@ Preferred communication style: Simple, everyday language.
 - Result limiting: Maximum 500 subdomains returned (top results by source count) for large domains
 - Timeout handling: 180s basic / 300s advanced mode with graceful degradation
 
-**JS Analyzer** (`js_analyzer/`)
-- JavaScript file discovery via Wayback Machine CDX API and live crawling
-- Secret detection with entropy-based validation (Shannon entropy)
-- Endpoint extraction and dangerous pattern identification
-- PRO mode with subdomain enumeration support
-- Report generation in JSON, HTML, and Markdown formats
-- Pattern-based detection with configurable security rules
+**GhostJS Analyzer** (external — hosted at `app.trinetlayer.com`)
+- JavaScript security analysis tool with 22 detection categories
+- Not part of this codebase; the frontend `/js-analyzer` page is an auth gate/landing page linking to the external app
 
 ### AI Content Generation
 - OpenAI integration for generating vulnerability educational content
@@ -89,7 +85,6 @@ Preferred communication style: Simple, everyday language.
 - **PostgreSQL**: Primary database via `DATABASE_URL` environment variable
 - **aiohttp**: Async HTTP client for external API queries
 - **dnspython**: DNS resolution for subdomain validation
-- **BeautifulSoup4**: HTML parsing for JS file extraction
 
 ### External APIs Consumed
 - **crt.sh**: Certificate Transparency log queries for subdomain discovery

@@ -17,7 +17,6 @@ The platform consists of:
 ```
 TrinetLayerCode/Trinet/Trinet-Layer/
 ├── config.py                          # Central configuration (env vars, rate limits, job queue)
-├── main.py                            # Default entry point (placeholder)
 ├── pyproject.toml                     # Python dependencies (FastAPI, uvicorn, aiohttp, dnspython, etc.)
 ├── pytest.ini                         # Test configuration
 ├── LOCAL_SETUP.md                     # Local development setup guide
