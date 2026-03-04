@@ -95,3 +95,7 @@ Preferred communication style: Simple, everyday language.
 - **crt.sh**: Certificate Transparency log queries for subdomain discovery
 - **Wayback Machine CDX API**: Historical URL discovery for JS files and subdomains
 - **Common Crawl Index**: Web archive data for subdomain enumeration
+
+## Documentation
+- **SYSTEM_ARCHITECTURE.md**: Complete system architecture, directory structure, tool details, data flow diagrams
+- **LOCAL_SETUP.md**: Comprehensive deployment guide for local Linux development and live server production deployment (Nginx, systemd, SSL)
